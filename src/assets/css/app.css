@@ -1,0 +1,20 @@
+@import url('sidebar.css');
+
+:root{
+  --primary:#152e6e;
+  --primary-hover:#0f1034;
+
+  --border-head-divider:#e4eaf9;
+}
+
+body{
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.full-width{
+	max-width: 100%;
+}
+.full-height{
+	height: 100vh;
+}
+
