@@ -1,6 +1,7 @@
 import {forwardRef, useRef, useEffect, useImperativeHandle} from 'react';
 
-import {Col, Row} from 'rsuite';
+import { Row} from 'rsuite';
+import Col from 'rsuite/Col';
 
 import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
 import 'datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css';
@@ -20,13 +21,23 @@ const Table = forwardRef(({
 	columns,
 	data,
 	search,
-	classes
+	classes,
+	loader
 }, ref)=>{
 
 	const table = useRef(null);
 
 	const setTable = async ()=>{
-		new DataTable('#table1',{
+		let columnsDef = columns.map((col, i)=>{
+			let item = {
+				width: col.width,
+				target: i
+			};
+
+			return item;
+		});
+
+		new DataTable('#table',{
 			dom:"<'row'<'col-sm-12 col-md-6 filter' f><'col-sm-12 col-md-6'B>>" +
         			"<'row'<'col-sm-12'tr>>" +
         		"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -61,7 +72,7 @@ const Table = forwardRef(({
 			info:false,
 			ordering:false,
 			columnDefs: [
-                { responsivePriority: 0, targets: -1, width:'120px' }
+                { responsivePriority: 0, targets: -1, width:'120px' },                
             ]
 		}); 
 	}
@@ -77,16 +88,16 @@ const Table = forwardRef(({
 		resetTable
 	}));
 
+
 	return(
 		<Row>
 			<Col xs={24}>
-				<table id="table1" width='100%' className={classes} ref={table}>
+				<table id="table" width='100%' className={classes} ref={table}>
 					<thead>
 						<tr>
-							{console.log(columns)}
 							{columns.map((column, index)=>
 								column.show && (
-									<th key={index}>
+									<th key={index} style={{width:column.width}}>
 										{column.label}
 									</th>
 								)

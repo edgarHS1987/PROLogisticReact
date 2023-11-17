@@ -25,10 +25,12 @@ const AppRoutes = (props)=>{
 		<Routes>
 			<Route path={'/login'} exact element={<Login {...props} />} />
 
-			<Route element={<Layout {...props} />}>
-				<Route path={'/'} exact element={<Home {...props} />} />
+			<Route element={<ProtectedRoute />}>
+				<Route element={<Layout {...props} />}>
+					<Route path={'/'} exact element={<Home {...props} />} />
 
-				<Route path={'/admin/permissions'} exact element={<PermissionsList {...props} />} />
+					<Route path={'/admin/permissions'} exact element={<PermissionsList {...props} />} />
+				</Route>
 			</Route>
 		</Routes>
 	);

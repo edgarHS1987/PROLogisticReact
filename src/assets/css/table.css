@@ -1,0 +1,19 @@
+table {
+	font-size: 0.75em;
+	table-layout: fixed;
+}
+
+/* Sobreescribe */
+.filter .dataTables_filter{
+	text-align: left !important;
+	margin-bottom: 0.5em;
+}
+
+.filter.dataTables_filter input{
+	margin-left: 0em;
+}
+
+.pagination .page-link {
+	font-size: 0.85em !important;
+	padding: 5px 10px !important;
+}

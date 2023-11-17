@@ -1,4 +1,9 @@
+@import url('loader.css');
+@import url('navbar.css');
 @import url('sidebar.css');
+@import url('title.css');
+@import url('table.css');
+
 
 :root{
   --primary:#152e6e;
@@ -18,3 +23,8 @@ body{
 	height: 100vh;
 }
 
+
+.login-title{
+  /*font-size: 2em;*/
+  color:var(--primary);
+}

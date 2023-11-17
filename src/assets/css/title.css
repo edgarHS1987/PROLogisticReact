@@ -1,0 +1,13 @@
+.title h1{
+  font-size: 21px;
+  margin: 0px;
+}
+.title small{
+  font-size: 13px;
+}
+.title.route .rs-breadcrumb{
+  margin: 0px;
+}
+.title.route .rs-panel-body{
+  padding: 10px;
+}

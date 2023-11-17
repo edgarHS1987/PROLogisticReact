@@ -1,7 +1,6 @@
 import cryptoJs from 'crypto-js';
 
 const apiUrl = import.meta.env.VITE_HOST;
-
 /**
  * Function general para llamar los servicios de api
  * @param {string | url} ruta de servicio a consultar
@@ -53,7 +52,9 @@ export const fetchRequest = ({
         if(res.ok){
             return res.json();
         }else{
-            res.text().then(msg => console.log(msg));
+            res.text().then(msg => {
+            	console.log(msg)
+            });
         }
     }).then(response => {
         if(response){
@@ -93,7 +94,6 @@ const findInStorage = (name)=>{
 export const encript = (name, value)=>{
 	let found = findInStorage(name);
 
-	console.log(cryptoJs)
 	let encriptedValue = cryptoJs.AES.encrypt(value, import.meta.env.VITE_MANAGE);
 	let encriptedName = cryptoJs.AES.encrypt(name, import.meta.env.VITE_MANAGE);
 

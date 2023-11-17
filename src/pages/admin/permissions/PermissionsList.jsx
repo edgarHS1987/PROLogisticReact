@@ -7,10 +7,29 @@ import Table from '../../../components/Table';
 import {permissions} from '../../../services/permissions';
 
 
-const PermissionsList = ()=>{
+const PermissionsList = ({loader})=>{
 	const tableRef = useRef(null);
 
-	const [tableConfig, setTableConfig] = useState({columns:[]})
+	const [tableConfig, setTableConfig] = useState({columns:[
+        {
+            label: 'Nombre corto',
+            selector: row => row.col1,
+            show:true,
+            width:'10%'
+        },
+        {
+            label: 'Nombre',
+            selector: row => row.col2,
+            show:true,
+            width:'10%'
+        },
+        {
+            label: 'Descripción',
+            selector: row => row.col3,
+            show:true,
+            width:'80%'
+        }
+    ]})
 	const [tableList, setTableList] = useState([]);
 
 	/**
@@ -29,26 +48,7 @@ const PermissionsList = ()=>{
      * 	}
      */
     const getTableConfig = async ()=>{
-        await setTableConfig({            
-            columns: [
-                {
-                    label: 'Nombre corto',
-                    selector: row => row.col1,
-                    show:true
-                },
-                {
-                    label: 'Nombre',
-                    selector: row => row.col2,
-                    show:true
-                },
-                {
-                	label: 'Descripción',
-                	selector: row => row.col3,
-                	show:true
-                }
-            ]
-        });        
-
+        
         await getDataPermissions();
     }
 
@@ -56,7 +56,7 @@ const PermissionsList = ()=>{
 		Funcion que inicializa la configuracion de la tabla
     */
 	const onLoad = async ()=>{
-
+        await tableRef.current.setTable();
 		await getTableConfig();
 	}
 
@@ -64,6 +64,8 @@ const PermissionsList = ()=>{
 	 * Obtiene el listado de permisos desde la base de datos
 	 * */
 	const getDataPermissions = async ()=>{
+        await loader.current.handleShow('Cargando...');
+
 		let response = await permissions();
 		if(response){
 			let data = response.map((res)=>{ //recorre el arreglo de permisos
@@ -87,11 +89,14 @@ const PermissionsList = ()=>{
 				await tableRef.current.setTable();
 			}, 0);
 		}
+
+        await loader.current.handleClose();
 	}
 
 	useEffect(()=>{
 		onLoad();
 	},[]);
+    
 
 	return(
 		<Grid fluid className='content'>
@@ -105,6 +110,7 @@ const PermissionsList = ()=>{
                <Col xs={24}>
                     <div className='p-4 shadow rounded form-content'>
                         <Table 
+                            loader={loader}
                             columns={tableConfig.columns}
                             data={tableList}
                             ref={tableRef}

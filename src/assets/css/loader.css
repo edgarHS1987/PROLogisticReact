@@ -1,0 +1,11 @@
+.modal-loader{
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  height: 90%;
+}
+.modal-loader .rs-modal-content{
+  background: transparent;
+  border: 0px;
+  box-shadow: 0 0 transparent;
+}
