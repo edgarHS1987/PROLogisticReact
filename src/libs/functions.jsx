@@ -1,6 +1,8 @@
 import cryptoJs from 'crypto-js';
 
-const apiUrl = import.meta.env.VITE_HOST;
+//const apiUrl = import.meta.env.VITE_HOST;
+
+const apiUrl = "http://127.0.0.1:8000/api";
 /**
  * Function general para llamar los servicios de api
  * @param {string | url} ruta de servicio a consultar
