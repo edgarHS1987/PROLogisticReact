@@ -5,7 +5,9 @@ import Layout from './components/Layout';
 import Login from './pages/Login';
 import Home from './pages/Home';
 
-import PermissionsList from './pages/admin/permissions/PermissionsList';
+import PermissionsList from './pages/admin/permissions/List';
+import RolesList from './pages/admin/roles/List';
+import RolesForm from './pages/admin/roles/Form';
 
 import { isAuth } from './libs/functions';
 
@@ -13,7 +15,7 @@ import { isAuth } from './libs/functions';
 const ProtectedRoute = ()=>{
 	let auth = isAuth();
 
-	if(!isAuth){
+	if(!auth){
 		return <Navigate to="login" replace />;
 	}
 
@@ -29,7 +31,11 @@ const AppRoutes = (props)=>{
 				<Route element={<Layout {...props} />}>
 					<Route path={'/'} exact element={<Home {...props} />} />
 
-					<Route path={'/admin/permissions'} exact element={<PermissionsList {...props} />} />
+					<Route path={'/admin/permissions/list'} exact element={<PermissionsList {...props} />} />
+
+					<Route path={'/admin/roles/list'} exact element={<RolesList {...props} />} />
+					<Route path={'/admin/roles/new'} exact element={<RolesForm {...props} />} />
+					<Route path={'/admin/roles/edit/:id'} exact element={<RolesForm {...props} />} />
 				</Route>
 			</Route>
 		</Routes>

@@ -73,14 +73,13 @@ const Table = forwardRef(({
 			ordering:false,
 			columnDefs: [
                 { responsivePriority: 0, targets: -1, width:'120px' },                
-            ]
+            ],
+			pageLength:25
 		}); 
 	}
 
 	const resetTable = async ()=>{
-		await new DataTable('#table').destroy();
-
-		
+		await new DataTable('#table').destroy();		
 	}
 
 	useImperativeHandle(ref, ()=>({
@@ -92,7 +91,7 @@ const Table = forwardRef(({
 	return(
 		<Row>
 			<Col xs={24}>
-				<table id="table" width='100%' className={classes} ref={table}>
+				<table id="table" width='100%' className={'table-hover '+classes} ref={table}>
 					<thead>
 						<tr>
 							{columns.map((column, index)=>

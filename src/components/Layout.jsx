@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import {Col, Grid, Drawer} from 'rsuite';
 
@@ -12,6 +12,7 @@ import Navbar from './Navbar';
 import {decript} from '../libs/functions';
 
 const Layout = ({loader, reset})=>{
+    const navigate = useNavigate();
 	const userName = decript('user_name');
 
 	const [showSidebar, setShowSidebar] = useState(true);
@@ -31,7 +32,9 @@ const Layout = ({loader, reset})=>{
 		 * */
 		{title:'Dashboard', submenu:[], show:true, open:false, active:true, url:'/', icon:<DashboardIcon />},
 		{title:'Admin', show:true, active:false, open:false, icon:<GearCircleIcon />, submenu:[
-			{title:'Permisos', show:true, active:false, url:'/admin/permissions'}
+			{title:'Permisos', show:true, active:false, url:'/admin/permissions/list'},
+            {title:'Roles', show:true, active:false, url:'/admin/roles/list'},
+            {title:'Usuarios', show:true, active:false, url:'/admin/permissions/list'}
 		]}
 	]);
 
@@ -135,8 +138,8 @@ const Layout = ({loader, reset})=>{
 					<Sidebar 
 						expanded={expandMenu}
 						menu={sidebarMenu}
-						onChangeMenu={()=>onChangeMenu()}
-						onSelectMenu={()=>onSelectMenu()}
+						onChangeMenu={onChangeMenu}
+						onSelectMenu={onSelectMenu}
 					/>
 				</Col>
 			: 
@@ -144,9 +147,8 @@ const Layout = ({loader, reset})=>{
 					<Sidebar 
 						expanded={true}
 						menu={sidebarMenu}
-						onChangeMenu={()=>onChangeMenu()}
-						onSelectMenu={()=>onSelectMenu()}
-
+						onChangeMenu={onChangeMenu}
+						onSelectMenu={onSelectMenu}
 					/>
 				</Drawer>
 			}
