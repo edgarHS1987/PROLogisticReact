@@ -5,7 +5,7 @@ import Col from 'rsuite/Col';
 
 import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
 import 'datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css';
-import jQuery from "jquery";
+import $ from "jquery";
 import jszip from 'jszip';
 import pdfmake from 'pdfmake';
 import DataTable from 'datatables.net-bs5';
@@ -28,15 +28,6 @@ const Table = forwardRef(({
 	const table = useRef(null);
 
 	const setTable = async ()=>{
-		let columnsDef = columns.map((col, i)=>{
-			let item = {
-				width: col.width,
-				target: i
-			};
-
-			return item;
-		});
-
 		new DataTable('#table',{
 			dom:"<'row'<'col-sm-12 col-md-6 filter' f><'col-sm-12 col-md-6'B>>" +
         			"<'row'<'col-sm-12'tr>>" +
@@ -72,8 +63,9 @@ const Table = forwardRef(({
 			info:false,
 			ordering:false,
 			columnDefs: [
-                { responsivePriority: 0, targets: -1, width:'120px' },                
-            ],
+				{ responsivePriority: 1, targets: 0 },
+        		{ responsivePriority: 2, targets: -1 }
+			],
 			pageLength:25
 		}); 
 	}
@@ -87,7 +79,6 @@ const Table = forwardRef(({
 		resetTable
 	}));
 
-
 	return(
 		<Row>
 			<Col xs={24}>
@@ -96,7 +87,7 @@ const Table = forwardRef(({
 						<tr>
 							{columns.map((column, index)=>
 								column.show && (
-									<th key={index} style={{width:column.width}}>
+									<th key={index} style={column.width ? {width:column.width} : {}}>
 										{column.label}
 									</th>
 								)

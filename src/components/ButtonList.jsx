@@ -16,7 +16,6 @@ const ButtonList = ({
             <Tooltip>{title}</Tooltip>
         }>
             <IconButton 
-                className="me-1"
                 circle
                 size="sm"
                 appearance={appearance}

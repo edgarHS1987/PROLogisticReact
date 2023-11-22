@@ -24,22 +24,14 @@ const RolesList = ({loader})=>{
  
 	const [tableConfig, setTableConfig] = useState({columns:[
         {
-            label: 'Nombre corto',
-            selector: row => row.col1,
-            show:true,
-            width:'20%'
-        },
-        {
             label: 'Nombre',
             selector: row => row.col2,
-            show:true,
-            width:'20%'
+            show:true
         },
         {
             label: 'Descripción',
             selector: row => row.col3,
-            show:true,
-            width:'60%'
+            show:true
         },
         {
             label:'',
