@@ -34,7 +34,7 @@ const Layout = ({loader, reset})=>{
 		{title:'Admin', show:true, active:false, open:false, icon:<GearCircleIcon />, submenu:[
 			{title:'Permisos', show:true, active:false, url:'/admin/permissions/list'},
             {title:'Roles', show:true, active:false, url:'/admin/roles/list'},
-            {title:'Usuarios', show:true, active:false, url:'/admin/permissions/list'}
+            {title:'Usuarios', show:true, active:false, url:'/admin/users/list'}
 		]}
 	]);
 

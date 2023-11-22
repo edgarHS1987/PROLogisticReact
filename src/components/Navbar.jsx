@@ -78,7 +78,7 @@ const Navbar = ({expanded, setExpanded, user, loader, reset, showSidebar})=>{
                         <Nav.Item>{userName}</Nav.Item>
                     )}
                     
-                    {/*<Nav.Item onClick={()=>onReset()}>Cambiar contraseña</Nav.Item>*/}
+                    <Nav.Item onClick={()=>onReset()}>Cambiar contraseña</Nav.Item>
                     <Nav.Item onClick={()=>signout()}>Salir</Nav.Item>
                 </Nav.Menu>
             </Nav>

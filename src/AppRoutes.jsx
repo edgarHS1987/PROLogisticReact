@@ -10,6 +10,8 @@ import RolesList from './pages/admin/roles/List';
 import RolesForm from './pages/admin/roles/Form';
 
 import { isAuth } from './libs/functions';
+import UsersList from './pages/admin/users/List';
+import UsersForm from './pages/admin/users/Form';
 
 //verifica si se ha iniciado sesion
 const ProtectedRoute = ()=>{
@@ -36,6 +38,11 @@ const AppRoutes = (props)=>{
 					<Route path={'/admin/roles/list'} exact element={<RolesList {...props} />} />
 					<Route path={'/admin/roles/new'} exact element={<RolesForm {...props} />} />
 					<Route path={'/admin/roles/edit/:id'} exact element={<RolesForm {...props} />} />
+
+					<Route path={'/admin/users/list'} exact element={<UsersList {...props} />} />
+					<Route path={'/admin/users/new'} exact element={<UsersForm {...props} />} />
+					<Route path={'/admin/users/edit/:id'} exact element={<UsersForm {...props} />} />
+
 				</Route>
 			</Route>
 		</Routes>
