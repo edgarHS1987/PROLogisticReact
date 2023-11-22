@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, Fragment } from "react";
+import { useState, useEffect, useRef, Fragment, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Grid, Col, Divider, ButtonToolbar} from 'rsuite';
@@ -12,6 +12,7 @@ import Button from "../../../components/Button";
 import { swalAction } from "../../../libs/functions";
 import Toast from "../../../components/Toast";
 import ModalPermissions from "../../modals/permissions";
+import SystemContext from "../../../context/SystemContext";
 
 
 
@@ -19,7 +20,8 @@ const RolesList = ({loader})=>{
 	const tableRef = useRef(null);
     const permissionsRef = useRef();
     const navigate = useNavigate();
-
+    const {getPermission} = useContext(SystemContext);
+ 
 	const [tableConfig, setTableConfig] = useState({columns:[
         {
             label: 'Nombre corto',
@@ -47,27 +49,33 @@ const RolesList = ({loader})=>{
                 return(
                     <Fragment>
                         <ButtonToolbar>
-                            <ButtonList 
-                                controlId={'assign'}
-                                title="Asignar permisos"
-                                type="assign_permission"
-                                action={()=>onAssignPermissions(row.id)}
-                            />
-                            
-                            <ButtonList 
-                                controlId={'edit'}
-                                title="Editar"
-                                type="edit"
-                                action={()=>onOpenEdit(row.id)}
-                            />
+                            {getPermission('admin_permissions_assign') && (
+                                <ButtonList 
+                                    controlId={'assign'}
+                                    title="Asignar permisos"
+                                    type="assign_permission"                            
+                                    action={()=>onAssignPermissions(row.id)}
+                                />
+                            )}                            
 
-                            <ButtonList 
-                                controlId={'delete'}
-                                title="Eliminar"
-                                type="delete"
-                                color="red"
-                                action={()=>onDelete(row.id)}
-                            />
+                            {getPermission('admin_roles_update') && (
+                                <ButtonList 
+                                    controlId={'edit'}
+                                    title="Editar"
+                                    type="edit"
+                                    action={()=>onOpenEdit(row.id)}
+                                />
+                            )}
+                            
+                            {getPermission('admin_roles_delete') && (
+                                <ButtonList 
+                                    controlId={'delete'}
+                                    title="Eliminar"
+                                    type="delete"
+                                    color="red"
+                                    action={()=>onDelete(row.id)}
+                                />
+                            )}
                         </ButtonToolbar>
                     </Fragment>
                 )
@@ -194,12 +202,14 @@ const RolesList = ({loader})=>{
             <Divider style={{marginTop:0}} />
             <Grid fluid>
                 <Col xs={24} className="container-buttons">
-                    <Button 
-                        title="Nuevo"
-                        appearance="ghost"
-                        classes="btn-new"
-                        action={()=>navigate('/admin/roles/new')}
-                    />
+                    {getPermission('admin_roles_create') && (
+                        <Button 
+                            title="Nuevo"
+                            appearance="ghost"
+                            classes="btn-new"
+                            action={()=>navigate('/admin/roles/new')}
+                        />
+                    )}
                 </Col>
                <Col xs={24}>
                     <div className='p-4 shadow rounded form-content'>

@@ -32,8 +32,8 @@ const Login = ({loader})=>{
                 encript('token', response.access_token);
                 encript('user_name', response.user.name);
                 encript('user_id', response.user.id.toString());
-                //encript('permissions', JSON.stringify(response.permissions));
-                //sessionStorage.setItem('reset', response.user.reset);
+                encript('permissions', JSON.stringify(response.permissions));
+                //encript('change', response.user.change);
 
                 navigate('/');
                 

@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import {Col, Grid, Drawer} from 'rsuite';
@@ -10,10 +10,12 @@ import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 
 import {decript} from '../libs/functions';
+import SystemContext from '../context/SystemContext';
 
 const Layout = ({loader, reset})=>{
     const navigate = useNavigate();
 	const userName = decript('user_name');
+    const {getPermission} = useContext(SystemContext);
 
 	const [showSidebar, setShowSidebar] = useState(true);
 	const [expandMenu, setExpandMenu] = useState(false);
@@ -31,10 +33,10 @@ const Layout = ({loader, reset})=>{
 		 *
 		 * */
 		{title:'Dashboard', submenu:[], show:true, open:false, active:true, url:'/', icon:<DashboardIcon />},
-		{title:'Admin', show:true, active:false, open:false, icon:<GearCircleIcon />, submenu:[
-			{title:'Permisos', show:true, active:false, url:'/admin/permissions/list'},
-            {title:'Roles', show:true, active:false, url:'/admin/roles/list'},
-            {title:'Usuarios', show:true, active:false, url:'/admin/users/list'}
+		{title:'Admin', show:getPermission('admin_menu'), active:false, open:false, icon:<GearCircleIcon />, submenu:[
+			{title:'Permisos', show:getPermission('admin_permissions'), active:false, url:'/admin/permissions/list'},
+            {title:'Roles', show:getPermission('admin_roles'), active:false, url:'/admin/roles/list'},
+            {title:'Usuarios', show:getPermission('admin_users'), active:false, url:'/admin/users/list'}
 		]}
 	]);
 
@@ -125,7 +127,6 @@ const Layout = ({loader, reset})=>{
     useEffect(()=>{
         
         resizeWindow();    
-
         updateMenu();
 
         // eslint-disable-next-line

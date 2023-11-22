@@ -12,6 +12,9 @@ import RolesForm from './pages/admin/roles/Form';
 import { isAuth } from './libs/functions';
 import UsersList from './pages/admin/users/List';
 import UsersForm from './pages/admin/users/Form';
+import { useContext } from 'react';
+import SystemContext from './context/SystemContext';
+import { Col, Grid } from 'rsuite';
 
 //verifica si se ha iniciado sesion
 const ProtectedRoute = ()=>{
@@ -24,7 +27,19 @@ const ProtectedRoute = ()=>{
 	return <Outlet />;
 }
 
+const NotFound = ()=>{
+	return(
+		<Grid>
+			<Col xs={24}>
+				<h3>Pagina no encontrada</h3>
+			</Col>
+		</Grid>
+	)
+}
+
 const AppRoutes = (props)=>{
+	const {getPermission} = useContext(SystemContext);
+
 	return (
 		<Routes>
 			<Route path={'/login'} exact element={<Login {...props} />} />
@@ -33,16 +48,31 @@ const AppRoutes = (props)=>{
 				<Route element={<Layout {...props} />}>
 					<Route path={'/'} exact element={<Home {...props} />} />
 
-					<Route path={'/admin/permissions/list'} exact element={<PermissionsList {...props} />} />
+					{getPermission('admin_permissions') && (
+						<Route path={'/admin/permissions/list'} exact element={<PermissionsList {...props} />} />
+					)}
+					
+					{getPermission('admin_roles') && (
+						<Route path={'/admin/roles/list'} exact element={<RolesList {...props} />} />
+					)}
+					{getPermission('admin_roles_create') && (
+						<Route path={'/admin/roles/new'} exact element={<RolesForm {...props} />} />
+					)}
+					{getPermission('admin_roles_update') && (
+						<Route path={'/admin/roles/edit/:id'} exact element={<RolesForm {...props} />} />
+					)}
+					
+					{getPermission('admin_roles_update') && (
+						<Route path={'/admin/users/list'} exact element={<UsersList {...props} />} />
+					)}
+					{getPermission('admin_roles_update') && (
+						<Route path={'/admin/users/new'} exact element={<UsersForm {...props} />} />
+					)}
+					{getPermission('admin_roles_update') && (
+						<Route path={'/admin/users/edit/:id'} exact element={<UsersForm {...props} />} />
+					)}
 
-					<Route path={'/admin/roles/list'} exact element={<RolesList {...props} />} />
-					<Route path={'/admin/roles/new'} exact element={<RolesForm {...props} />} />
-					<Route path={'/admin/roles/edit/:id'} exact element={<RolesForm {...props} />} />
-
-					<Route path={'/admin/users/list'} exact element={<UsersList {...props} />} />
-					<Route path={'/admin/users/new'} exact element={<UsersForm {...props} />} />
-					<Route path={'/admin/users/edit/:id'} exact element={<UsersForm {...props} />} />
-
+					<Route path={'/*'} element={<NotFound />} />
 				</Route>
 			</Route>
 		</Routes>

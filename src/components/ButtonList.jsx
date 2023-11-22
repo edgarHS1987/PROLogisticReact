@@ -1,5 +1,6 @@
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import { GoPasskeyFill } from "react-icons/go";
+import { RiLockPasswordLine } from "react-icons/ri";
 import { IconButton, Tooltip, Whisper } from "rsuite";
 
 const ButtonList = ({
@@ -27,6 +28,8 @@ const ButtonList = ({
                         <GoPasskeyFill />
                     :type === 'delete' ?
                         <FaTrashAlt />
+                    :type === 'reset' ?
+                        <RiLockPasswordLine />
                     : null
                 } 
                 onClick={()=>action()}
