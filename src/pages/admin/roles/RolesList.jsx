@@ -4,10 +4,10 @@ import {Button, Grid, Col, Divider} from 'rsuite';
 
 import Title from '../../../components/Title';
 import Table from '../../../components/Table';
-import {permissions} from '../../../services/permissions';
+import {roles} from '../../../services/roles';
 
 
-const PermissionsList = ({loader})=>{
+const RolesList = ({loader})=>{
 	const tableRef = useRef(null);
 
 	const [tableConfig, setTableConfig] = useState({columns:[
@@ -49,7 +49,7 @@ const PermissionsList = ({loader})=>{
      */
     const getTableConfig = async ()=>{
         
-        await getDataPermissions();
+        await getDataRoles();
     }
 
     /*
@@ -63,10 +63,10 @@ const PermissionsList = ({loader})=>{
 	/**
 	 * Obtiene el listado de permisos desde la base de datos
 	 * */
-	const getDataPermissions = async ()=>{
+	const getDataRoles = async ()=>{
         await loader.current.handleShow('Cargando...');
 
-		let response = await permissions();
+		let response = await roles();
 		if(response){
 
 			let data = response.data.map((res)=>{ //recorre el arreglo de permisos
@@ -103,7 +103,7 @@ const PermissionsList = ({loader})=>{
 		<Grid fluid className='content'>
             <Grid fluid>
                 <Col xs={24} className="mb-2">
-                    <Title screen="Permisos" action="Listado" />
+                    <Title screen="Roles" action="Listado" />
                 </Col>
             </Grid>            
             <Divider style={{marginTop:0}} />
@@ -123,4 +123,4 @@ const PermissionsList = ({loader})=>{
 	)
 }
 
-export default PermissionsList;
+export default RolesList;
