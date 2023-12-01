@@ -22,13 +22,15 @@ const Table = forwardRef(({
 	data,
 	search,
 	classes,
-	loader
+	id = 'table',
+	isSmall = false
 }, ref)=>{
 
 	const table = useRef(null);
 
 	const setTable = async ()=>{
-		new DataTable('#table',{
+		let tableId = '#'+table.current.id;
+		new DataTable(tableId,{
 			dom:"<'row'<'col-sm-12 col-md-6 filter' f><'col-sm-12 col-md-6'B>>" +
         			"<'row'<'col-sm-12'tr>>" +
         		"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -54,12 +56,12 @@ const Table = forwardRef(({
 				},
 				"fnInfoCallback":null,
 			},
-			paging:true,
+			paging:isSmall ? false : true,
 			responsive:true,
 			searching: search,
-			//scrollY:"20em",
-			//scrollX: true,
-			autoWidth: true,
+			scrollY: isSmall ? "15em" : "",
+			scrollX: false,
+			autoWidth: isSmall ? false :true,
 			info:false,
 			ordering:false,
 			columnDefs: [
@@ -71,7 +73,8 @@ const Table = forwardRef(({
 	}
 
 	const resetTable = async ()=>{
-		await new DataTable('#table').destroy();		
+		let tableId = '#'+table.current.id;
+		await new DataTable(tableId).destroy();		
 	}
 
 	useImperativeHandle(ref, ()=>({
@@ -82,7 +85,7 @@ const Table = forwardRef(({
 	return(
 		<Row>
 			<Col xs={24}>
-				<table id="table" width='100%' className={'table-hover '+classes} ref={table}>
+				<table id={id} width='100%' className={'table-hover '+classes} ref={table}>
 					<thead>
 						<tr>
 							{columns.map((column, index)=>

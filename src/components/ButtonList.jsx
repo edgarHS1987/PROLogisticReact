@@ -1,6 +1,7 @@
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import { GoPasskeyFill } from "react-icons/go";
 import { RiLockPasswordLine } from "react-icons/ri";
+import { MdManageAccounts } from "react-icons/md";
 import { IconButton, Tooltip, Whisper } from "rsuite";
 
 const ButtonList = ({
@@ -29,6 +30,8 @@ const ButtonList = ({
                         <FaTrashAlt />
                     :type === 'reset' ?
                         <RiLockPasswordLine />
+                    :type === 'config' ?
+                        <MdManageAccounts />
                     : null
                 } 
                 onClick={()=>action()}

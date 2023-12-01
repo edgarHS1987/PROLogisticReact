@@ -1,4 +1,9 @@
+import { useContext } from 'react';
+import SystemContext from './context/SystemContext';
+import { Col, Grid } from 'rsuite';
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
+
+import { isAuth } from './libs/functions';
 
 import Layout from './components/Layout';
 
@@ -9,12 +14,11 @@ import PermissionsList from './pages/admin/permissions/List';
 import RolesList from './pages/admin/roles/List';
 import RolesForm from './pages/admin/roles/Form';
 
-import { isAuth } from './libs/functions';
 import UsersList from './pages/admin/users/List';
 import UsersForm from './pages/admin/users/Form';
-import { useContext } from 'react';
-import SystemContext from './context/SystemContext';
-import { Col, Grid } from 'rsuite';
+
+import ZonesList from './pages/services/zones/List';
+import StatesList from './pages/services/states/List';
 
 //verifica si se ha iniciado sesion
 const ProtectedRoute = ()=>{
@@ -48,10 +52,13 @@ const AppRoutes = (props)=>{
 				<Route element={<Layout {...props} />}>
 					<Route path={'/'} exact element={<Home {...props} />} />
 
+
+					{/** PERMISOS */}
 					{getPermission('admin_permissions') && (
 						<Route path={'/admin/permissions/list'} exact element={<PermissionsList {...props} />} />
 					)}
 					
+					{/** ROLES */}
 					{getPermission('admin_roles') && (
 						<Route path={'/admin/roles/list'} exact element={<RolesList {...props} />} />
 					)}
@@ -62,6 +69,7 @@ const AppRoutes = (props)=>{
 						<Route path={'/admin/roles/edit/:id'} exact element={<RolesForm {...props} />} />
 					)}
 					
+					{/** USUARIOS */}
 					{getPermission('admin_roles_update') && (
 						<Route path={'/admin/users/list'} exact element={<UsersList {...props} />} />
 					)}
@@ -71,6 +79,14 @@ const AppRoutes = (props)=>{
 					{getPermission('admin_roles_update') && (
 						<Route path={'/admin/users/edit/:id'} exact element={<UsersForm {...props} />} />
 					)}
+
+					{/** ZONAS */}
+					<Route path={'/services/zones/list'} exact element={<ZonesList {...props} />} />
+
+					{/** ESTADOS */}
+					<Route path={'/services/states/list'} exact element={<StatesList {...props} />} />
+
+
 
 					<Route path={'/*'} element={<NotFound />} />
 				</Route>

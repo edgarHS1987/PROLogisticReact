@@ -5,6 +5,7 @@ import {Col, Grid, Drawer} from 'rsuite';
 
 import DashboardIcon from '@rsuite/icons/legacy/Dashboard';
 import GearCircleIcon from '@rsuite/icons/legacy/GearCircle';
+import { FaMapLocationDot } from "react-icons/fa6";
 
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
@@ -32,11 +33,16 @@ const Layout = ({loader, reset})=>{
 		 * icon: icono de menu o submenu
 		 *
 		 * */
-		{title:'Dashboard', submenu:[], show:true, open:false, active:true, url:'/', icon:<DashboardIcon />},
+		{title:'Dashboard', submenu:[], show:true, open:false, active:true, url:'/', icon:<DashboardIcon />},        
+        {title:'Servicios', show:true, active:false, open:false, icon:<FaMapLocationDot className='icon-menu' />, submenu:[
+            {title:'Estados', show:true, active:false, url:'/services/states/list'},
+			{title:'Zonas', show:true, active:false, url:'/services/zones/list'}
+		]},
 		{title:'Admin', show:getPermission('admin_menu'), active:false, open:false, icon:<GearCircleIcon />, submenu:[
 			{title:'Permisos', show:getPermission('admin_permissions'), active:false, url:'/admin/permissions/list'},
             {title:'Roles', show:getPermission('admin_roles'), active:false, url:'/admin/roles/list'},
-            {title:'Usuarios', show:getPermission('admin_users'), active:false, url:'/admin/users/list'}
+            {title:'Usuarios', show:getPermission('admin_users'), active:false, url:'/admin/users/list'},
+            {title:'Configuración', show:getPermission('admin_users'), active:false, url:'/admin/configuration/list'},
 		]}
 	]);
 

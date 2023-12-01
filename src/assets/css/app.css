@@ -25,8 +25,19 @@ body{
 	height: 100vh;
 }
 
+.flex{
+  display: flex;
+}
 
 .login-title{
   /*font-size: 2em;*/
   color:var(--primary);
+}
+
+.uploader .rs-btn{
+  background-color: #3498ff;
+  background-color: var(--rs-btn-primary-bg);
+  border: none;
+  color: #fff;
+  color: var(--rs-btn-primary-text);
 }
