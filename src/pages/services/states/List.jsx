@@ -3,11 +3,12 @@ import { Col, Divider, Grid, Panel, PanelGroup, Row } from "rsuite"
 
 import Title from "../../../components/Title"
 import Button from "../../../components/Button";
-import MunicipalitiesModal from "../../modals/municipalities";
-import { statesDetails } from "../../../services/states";
 import Table from "../../../components/Table";
 import ModalStates from "../../modals/States";
+import MunicipalitiesModal from "../../modals/municipalities";
+import { statesDetails } from "../../../services/states";
 import { municipalitiesShow } from "../../../services/municipalities";
+import ButtonList from "../../../components/ButtonList";
 
 const StatesList = ({loader})=>{   
     const statesRef = useRef();
@@ -158,7 +159,24 @@ const StatesList = ({loader})=>{
                                         <Col xs={24}>
                                             <PanelGroup accordion onSelect={(e)=>onSelectMunicipality(e)}>
                                                 {state.municipalities.map((municipality, j)=>
-                                                    <Panel header={municipality.name} bordered key={j} eventKey={j}>                                                        
+                                                    <Panel 
+                                                        header={
+                                                            <>
+                                                                <label className="me-2">{municipality.name}</label>
+                                                                {municipality.hasLocation !== 0 && (
+                                                                    <ButtonList 
+                                                                        controlId={'locationId'}
+                                                                        title={'Municipio con unicaciones'}
+                                                                        type={'location'}
+                                                                        size={'xs'}
+                                                                    />
+                                                                )}
+                                                            </>
+                                                        } 
+                                                        bordered 
+                                                        key={j} 
+                                                        eventKey={j}
+                                                    >
                                                         <Col xs={24}>
                                                             <Table 
                                                                 columns={tableColumns}

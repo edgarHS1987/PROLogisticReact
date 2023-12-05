@@ -3,6 +3,7 @@ import { GoPasskeyFill } from "react-icons/go";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdManageAccounts } from "react-icons/md";
 import { IconButton, Tooltip, Whisper } from "rsuite";
+import { FaLocationDot } from "react-icons/fa6";
 
 const ButtonList = ({
     controlId,
@@ -10,6 +11,7 @@ const ButtonList = ({
     type,
     appearance = 'primary',
     color = 'blue',
+    size = 'sm',
     action = ()=>{}
 })=>{
     return(
@@ -18,7 +20,7 @@ const ButtonList = ({
         }>
             <IconButton 
                 circle
-                size="sm"
+                size={size}
                 appearance={appearance}
                 color={color}
                 icon={
@@ -32,6 +34,8 @@ const ButtonList = ({
                         <RiLockPasswordLine />
                     :type === 'config' ?
                         <MdManageAccounts />
+                    :type === 'location' ?
+                        <FaLocationDot />
                     : null
                 } 
                 onClick={()=>action()}
