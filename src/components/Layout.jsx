@@ -12,6 +12,7 @@ import Navbar from './Navbar';
 
 import {decript} from '../libs/functions';
 import SystemContext from '../context/SystemContext';
+import { FaUser } from 'react-icons/fa';
 
 const Layout = ({loader, reset})=>{
     const navigate = useNavigate();
@@ -34,6 +35,7 @@ const Layout = ({loader, reset})=>{
 		 *
 		 * */
 		{title:'Dashboard', submenu:[], show:true, open:false, active:true, url:'/', icon:<DashboardIcon />},        
+        {title:'Clientes', submenu:[], show:true, open:false, active:true, url:'/clients/list', icon:<FaUser />},
         {title:'Servicios', show:true, active:false, open:false, icon:<FaMapLocationDot className='icon-menu' />, submenu:[
             {title:'Estados', show:true, active:false, url:'/services/states/list'},
 			{title:'Zonas', show:true, active:false, url:'/services/zones/list'}

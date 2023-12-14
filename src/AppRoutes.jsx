@@ -14,6 +14,8 @@ import PermissionsList from './pages/admin/permissions/List';
 import RolesList from './pages/admin/roles/List';
 import RolesForm from './pages/admin/roles/Form';
 
+import ClientsList from './pages/clients/List';
+
 import UsersList from './pages/admin/users/List';
 import UsersForm from './pages/admin/users/Form';
 
@@ -79,6 +81,9 @@ const AppRoutes = (props)=>{
 					{getPermission('admin_roles_update') && (
 						<Route path={'/admin/users/edit/:id'} exact element={<UsersForm {...props} />} />
 					)}
+
+					{/** CLIENTES */}
+					<Route path={'/clients/list'} exact element={<ClientsList {...props} />} />
 
 					{/** ZONAS */}
 					<Route path={'/services/zones/list'} exact element={<ZonesList {...props} />} />
