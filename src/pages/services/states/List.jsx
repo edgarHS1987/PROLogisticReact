@@ -153,7 +153,7 @@ const StatesList = ({loader})=>{
                     
                     <Col xs={24}>
                         <div>
-                            <PanelGroup accordion defaultActiveKey={activePanel} onSelect={(state_id)=>getDataMunicipalities(state_id)} bordered>                                
+                            <PanelGroup accordion defaultActiveKey={activePanel} onSelect={(state_id)=>getDataMunicipalities(state_id)} bordered>
                                 {statesList.map((state, index)=>
                                     <Panel header={state.name} key={index} eventKey={state.id}>
                                         <Col xs={24}>

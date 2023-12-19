@@ -16,7 +16,9 @@
 body{
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
-
+.error{
+  box-shadow: 0 0 5px 1px red !important;
+}
 .full-width{
   width: 100%;
 	max-width: 100%;

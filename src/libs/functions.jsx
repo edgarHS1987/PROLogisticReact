@@ -207,23 +207,33 @@ export const showCtrlError = (id)=>{
  * Muestra modal de confirmacion para realizar alguna accion como por ejemplo eliminar un registro
  * @param {*} obj datos de variables
  */
-export const swalAction = (obj)=>{
+export const swalAction = ({
+	title,
+	text,
+	icon,
+	textConfirm,
+	colorCancel = 'var(--rs-red-500)',
+	textCancel = 'No, Cancelar',
+	fn,
+	fnCancel=()=>{},
+	values
+})=>{
 	Swal.fire({
-		title 				: obj.title,
-		text 				: obj.text,
-		icon 				: obj.icon,
+		title 				: title,
+		text 				: text,
+		icon 				: icon,
 		showConfirmButton	: true,
 		showCancelButton	: true,
-		confirmButtonText	: obj.textConfirm,
+		confirmButtonText	: textConfirm,
 		confirmButtonColor  : 'var(--rs-blue-500)',
-		cancelButtonColor	: obj.colorCancel || 'var(--rs-red-500)',
-		cancelButtonText	: obj.textcancel
+		cancelButtonColor	: colorCancel,
+		cancelButtonText	: textCancel
 	}).then(result => {
 		if(result.isConfirmed){
-			obj.fn(obj.values);
+			fn(values);
 		}else{
-			if(obj.fnCancel !== undefined){
-				obj.fnCancel(obj.values);
+			if(fnCancel !== undefined){
+				fnCancel(values);
 			}
 		}
 	});
