@@ -4,7 +4,7 @@ import {Button, Grid, Col, Divider} from 'rsuite';
 import Title from '../../components/Title';
 import Table from '../../components/Table';
 
-const NewDriver = () => {
+const NewDriver = ( {loader} ) => {
   return (
     <Grid fluid className='content'>
             <Grid fluid>
@@ -16,7 +16,7 @@ const NewDriver = () => {
             <Grid fluid>
                <Col xs={24}>
                     <div className='p-4 shadow rounded form-content'>
-                        <StepsForRegister
+                        <StepsForRegister loader={loader}
                         />                        
                     </div>                    
                 </Col>

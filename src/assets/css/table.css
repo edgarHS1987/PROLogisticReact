@@ -3,6 +3,10 @@ table {
 	table-layout: fixed;
 }
 
+table.dataTable td, table.dataTable th{
+	padding-bottom: 5px;
+}
+
 /* Sobreescribe */
 .filter .dataTables_filter{
 	text-align: left !important;
@@ -16,4 +20,16 @@ table {
 .pagination .page-link {
 	font-size: 0.85em !important;
 	padding: 5px 10px !important;
+}
+
+.container-buttons{
+	position: relative;
+}
+
+.container-buttons .btn-new{
+	position:absolute;
+	right:0;
+	margin-top:25px;
+	margin-right:25px;
+	z-index:1;
 }

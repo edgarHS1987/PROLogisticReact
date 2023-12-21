@@ -5,7 +5,7 @@ import SystemContext from "./SystemContext";
 
 const SystemState = ({children})=>{
     const getPermission = (name)=>{
-        let permissions = JSON.parse(decript('permissions'));
+        let permissions = decript('permissions') !== '' ? JSON.parse(decript('permissions')) : [];
     
         let exist = permissions.findIndex(item => item === name);
 

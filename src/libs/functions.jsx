@@ -1,8 +1,8 @@
 import cryptoJs from 'crypto-js';
+import Swal from 'sweetalert2';
 
-//const apiUrl = import.meta.env.VITE_HOST;
+const apiUrl = import.meta.env.VITE_HOST;
 
-const apiUrl = "http://127.0.0.1:8000/api";
 /**
  * Function general para llamar los servicios de api
  * @param {string | url} ruta de servicio a consultar
@@ -19,7 +19,7 @@ export const fetchRequest = ({
 	method = 'GET',
 	body = null,
 	requireToken = true,
-	sendFile = false
+	sendFile = false,
 })=>{
 	let token = decript('token');
 	let headers = {
@@ -52,10 +52,12 @@ export const fetchRequest = ({
 		headers: new Headers( headers )
 	}).then(res => {
         if(res.ok){
-            return res.json();
+
+            return sendFile ? res.blob() :res.json();
         }else{
+			return res.json();
             res.text().then(msg => {
-            	console.log(msg)
+            	//console.log(msg)
             });
         }
     }).then(response => {
@@ -140,9 +142,92 @@ export const isAuth = ()=>{
 	let auth = false;
 
 	let find = findInStorage('token');
-	if(find === 'token'){
+	if(find !== ''){
 		auth = true;
 	}
     
     return auth;
+}
+
+/**
+ * Verifica que el formulario este completo con los campos que son requeridos
+ * @param {*} element identidicador de formulario ej div.class_name
+ * @returns boolean
+ */
+export const isValidForm = (element)=>{
+	var ctrls = [];
+	const select = document.querySelector(element);
+
+	if(select !== null){
+		ctrls = select.querySelectorAll('input, select');
+   	
+	    let isFormValid = true;
+    	 ctrls.forEach(ctrl => {
+	    	if(ctrl.required){
+		      	const isInputValid = showCtrlError(ctrl.id);
+		      	if (!isInputValid) {
+		        	isFormValid = false;
+		    	}
+		  	}
+	    });
+	   
+	    return isFormValid;
+	}
+
+	return true;
+
+};
+
+/**
+ * marca los elementos requeridos cuando el campo esta vacio
+ * @param {*} id identificador de elemento
+ * @returns boolean
+ */
+export const showCtrlError = (id)=>{
+	var res = null;
+	var control = document.getElementById(id);
+
+	if(control !== null){
+		if (control.value.trim() === "") {
+	        if(control !== null){
+	            control.classList.add('error');
+	        }
+			res = false;
+		} else{
+			if(control !== null){
+				if(control.required && control.className.includes('error')){
+		        	control.classList.remove('error');
+		    	}
+	    	}
+			res = true;
+		}
+	}
+
+	return res;
+};
+
+/**
+ * Muestra modal de confirmacion para realizar alguna accion como por ejemplo eliminar un registro
+ * @param {*} obj datos de variables
+ */
+export const swalAction = (obj)=>{
+	Swal.fire({
+		title 				: obj.title,
+		text 				: obj.text,
+		icon 				: obj.icon,
+		showConfirmButton	: true,
+		showCancelButton	: true,
+		confirmButtonText	: obj.textConfirm,
+		confirmButtonColor  : 'var(--rs-blue-500)',
+		cancelButtonColor	: obj.colorCancel || 'var(--rs-red-500)',
+		cancelButtonText	: obj.textcancel
+	}).then(result => {
+		if(result.isConfirmed){
+			obj.fn(obj.values);
+		}else{
+			if(obj.fnCancel !== undefined){
+				obj.fnCancel(obj.values);
+			}
+		}
+	});
 }
