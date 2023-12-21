@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FlexboxGrid, Grid, Col, Panel, Button } from "rsuite";
-//import Toast from "../components/Toast";
+
 import { encript } from "../libs/functions";
 import { login } from "../services/auth";
+import Toast from "../components/Toast";
 
 
 
@@ -31,27 +32,20 @@ const Login = ({loader})=>{
                 encript('token', response.access_token);
                 encript('user_name', response.user.name);
                 encript('user_id', response.user.id.toString());
-                //encript('permissions', JSON.stringify(response.permissions));
-                //sessionStorage.setItem('reset', response.user.reset);
+                encript('permissions', JSON.stringify(response.permissions));
+                //encript('change', response.user.change);
 
                 navigate('/');
-
-
                 
             }else{
-                //Toast.fire({icon:'error', title:'Error', text:'Contraseña y/o usuario incorrecto'});
+                Toast.fire({icon:'error', title:'Error', text:'Contraseña y/o usuario incorrecto'});
             }
 
             await loader.current.handleClose();
         }else{
-            //Toast.fire({icon:'error', title:'Error', text:error});
+            Toast.fire({icon:'error', title:'Error', text:error});
         }
     }
-
-    useEffect(()=>{
-    	encript('name', 'rogelio') 
-    },[]);
-
 
     return(
         <Grid fluid>

@@ -1,0 +1,18 @@
+
+.permissions-container{
+    border:1px solid #ccc;
+    border-radius:3px;
+    height:200px;
+    overflow-y:auto;
+    list-style-type: none;
+    padding: 0px;
+}
+.permissions-container li{
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    padding: 1px 10px;
+}
+.permissions-container li:hover{
+    background-color: #486298;
+    color: #fff;
+}
