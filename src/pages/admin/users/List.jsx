@@ -178,7 +178,7 @@ const UsersList = ({loader, reset})=>{
             text            : 'Desea eliminar el registro?',
             icon            : 'warning',
             textConfirm     : 'Si, eliminar',
-            textcancel      : 'No, cancelar',
+            textCancel      : 'No, cancelar',
             values          : id,
             fn              : deleteItem
         });

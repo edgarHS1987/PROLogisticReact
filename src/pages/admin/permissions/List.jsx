@@ -15,19 +15,19 @@ const PermissionsList = ({loader})=>{
             label: 'Nombre corto',
             selector: row => row.col1,
             show:true,
-            width:'10%'
+            width:'15%'
         },
         {
             label: 'Nombre',
             selector: row => row.col2,
             show:true,
-            width:'10%'
+            width:'15%'
         },
         {
             label: 'Descripción',
             selector: row => row.col3,
             show:true,
-            width:'80%'
+            width:'70%'
         }
     ]})
 	const [tableList, setTableList] = useState([]);
