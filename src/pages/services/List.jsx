@@ -1,16 +1,43 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Col, Divider, Grid } from "rsuite";
 
 import Title from "../../components/Title"
 import Button from "../../components/Button";
 
-import { getDevice } from "../../libs/functions";
+import { decript, getDevice } from "../../libs/functions";
+import { servicesTotalUnsigned } from "../../services/services";
 
+import ModalUnsignedService from "../modals/Unsigned";
 
 const ServicesList = ()=>{
+    const unsignedModal = useRef();
+    
     const navigate = useNavigate();
 
+    const [totalServiceUnsigned, setTotalServiceUnsigned] = useState(0);
+
+    const onLoad = ()=>{
+        getServiceUnsigned();
+    }
+
+    const getServiceUnsigned = async ()=>{
+        let clients_id = decript('clients_id');
+
+        let response = await servicesTotalUnsigned(clients_id);
+
+        if(response){
+            setTotalServiceUnsigned(response);
+
+            if(response > 0){
+                unsignedModal.current.handleShow(response);
+            }
+        }
+    }
+
+    useEffect(()=>{
+        onLoad();
+    },[]);
     
     return(
         <Grid fluid className='content'>
@@ -32,7 +59,11 @@ const ServicesList = ()=>{
                 <Col xs={24} className='p-2 border rounded justify-content-center'>
 
                 </Col>
-            </Grid>            
+            </Grid>     
+
+            <ModalUnsignedService 
+                ref={unsignedModal}
+            />       
         </Grid>
     )
 }

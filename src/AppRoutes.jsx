@@ -62,30 +62,10 @@ const AppRoutes = (props)=>{
 				<Route element={<Layout {...props} />}>
 					<Route path={'/'} exact element={<Home {...props} />} />
 
-					<Route path={'/drivers'} exact element={<DriversList {...props} />} />
-
+					<Route path={'/drivers/list'} exact element={<DriversList {...props} />} />
 					<Route path={'/drivers/new'} exact element={<NewDriver {...props} />} />
-
 					<Route path={'/drivers/edit/:id'} exact element={<NewDriver {...props} />} />
-
 					<Route path={'/reports/drivers/workingDays'} exact element={<WorkingDays {...props} />} />
-
-					<Route path={'/drivers'} exact element={<DriversList {...props} />} />
-
-					<Route path={'/drivers/new'} exact element={<NewDriver {...props} />} />
-
-					<Route path={'/drivers/edit/:id'} exact element={<NewDriver {...props} />} />
-
-					<Route path={'/reports/drivers/workingDays'} exact element={<WorkingDays {...props} />} />
-
-					<Route path={'/drivers'} exact element={<DriversList {...props} />} />
-
-					<Route path={'/drivers/new'} exact element={<NewDriver {...props} />} />
-
-					<Route path={'/drivers/edit/:id'} exact element={<NewDriver {...props} />} />
-
-					<Route path={'/reports/drivers/workingDays'} exact element={<WorkingDays {...props} />} />
-
 
 					{/** PERMISOS */}
 					{getPermission('admin_permissions') && (

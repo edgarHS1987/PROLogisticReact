@@ -11,7 +11,6 @@ import BarcodesScanner from "../../components/BarcodeScanner";
 import Toast from "../../components/Toast";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
-import Table from "../../components/Table";
 import ButtonList from "../../components/ButtonList";
 
 import sound from '../../assets/error.mp3';
@@ -19,7 +18,7 @@ import sound from '../../assets/error.mp3';
 import { addErrorToSelectedField, getDevice, isValidForm, swalAction } from "../../libs/functions";
 import { clientsList } from "../../services/clients";
 import { warehousesShow } from "../../services/warehouses";
-import { servicesDelete, servicesList, servicesSave } from "../../services/services";
+import { servicesDelete, servicesSave, servicesUnsignedByClient } from "../../services/services";
 import ServicesTable from "./ServicesTable";
 import ModalServices from "../modals/Services";
 
@@ -120,13 +119,11 @@ const ServicesForm = ({loader})=>{
                 await getData(response[0].value);
             }
             
-        }
-
-        
+        }        
     }
 
     const getData = async (id = dataService.clients_id)=>{
-        let response = await servicesList({clients_id: id});
+        let response = await servicesUnsignedByClient({clients_id: id});
         if(response){
             let data = dataService.services;
 

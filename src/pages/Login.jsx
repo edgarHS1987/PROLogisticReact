@@ -5,6 +5,7 @@ import { FlexboxGrid, Grid, Col, Panel, Button } from "rsuite";
 import { encript } from "../libs/functions";
 import { login } from "../services/auth";
 import Toast from "../components/Toast";
+import { clientsList } from "../services/clients";
 
 
 
@@ -29,11 +30,17 @@ const Login = ({loader})=>{
 
             let response = await login(obj);
             if(response){
+                
                 encript('token', response.access_token);
                 encript('user_name', response.user.name);
                 encript('user_id', response.user.id.toString());
                 encript('permissions', JSON.stringify(response.permissions));
                 //encript('change', response.user.change);
+
+                let clients = await clientsList();
+                if(clients){                    
+                    encript('clients_id', JSON.stringify(clients[0].value));
+                }
 
                 navigate('/');
                 

@@ -42,22 +42,20 @@ const Layout = ({loader, reset})=>{
             {title:'Estados', show:true, active:false, url:'/services/states/list'},
 			{title:'Zonas', show:true, active:false, url:'/services/zones/list'},
             {title:'Servicios', show:true, active:false, url:'/services/list'}
-		]},
-		{title:'Admin', show:getPermission('admin_menu'), active:false, open:false, icon:<GearCircleIcon />, submenu:[
-			{title:'Permisos', show:getPermission('admin_permissions'), active:false, url:'/admin/permissions/list'},
-            {title:'Roles', show:getPermission('admin_roles'), active:false, url:'/admin/roles/list'},
-            {title:'Usuarios', show:getPermission('admin_users'), active:false, url:'/admin/users/list'}
-		]},
-        {title:'Drivers', show:getPermission('admin_menu'), active:false, open:false, icon:<MemberIcon />, submenu:[
-			{title:'Ver', show:getPermission('admin_permissions'), active:false, url:'/drivers/'},
-		]},
+		]},		
+        {title:'Drivers', submenu:[], show:true, open:false, active:true, url:'/drivers/list', icon:<MemberIcon />},
         {title:'Reportes', show:getPermission('admin_menu'), active:false, open:false, icon:<DetailIcon />, submenu:[
 			{title:'Dias Activos Drivers', show:getPermission('admin_permissions'), active:false, url:'/reports/drivers/workingDays'},
             {title:'Servicios Asginados', show:getPermission('admin_permissions'), active:false, url:'/reports/services/assigned'},
             {title:'Estatus Servicios', show:getPermission('admin_permissions'), active:false, url:'/reports/services/status'},
             {title:'Usuarios', show:getPermission('admin_users'), active:false, url:'/admin/users/list'},
             {title:'Configuración', show:getPermission('admin_users'), active:false, url:'/admin/configuration/list'},
-		]}
+		]},
+        {title:'Admin', show:getPermission('admin_menu'), active:false, open:false, icon:<GearCircleIcon />, submenu:[
+			{title:'Permisos', show:getPermission('admin_permissions'), active:false, url:'/admin/permissions/list'},
+            {title:'Roles', show:getPermission('admin_roles'), active:false, url:'/admin/roles/list'},
+            {title:'Usuarios', show:getPermission('admin_users'), active:false, url:'/admin/users/list'}
+		]},
 	]);
 
 	/**
