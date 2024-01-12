@@ -7,7 +7,7 @@ import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
 import 'datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css';
 import $ from "jquery";
 import jszip from 'jszip';
-import pdfmake from 'pdfmake';
+import pdfMake from 'pdfmake';
 import DataTable from 'datatables.net-bs5';
 import 'datatables.net-buttons-bs5';
 import 'datatables.net-buttons/js/buttons.html5.mjs';

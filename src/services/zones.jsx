@@ -17,5 +17,5 @@ export const zonesConfiguring = (obj)=>{
  * @param {*} clients_id 
  */
 export const zonesVerify = (clients_id)=>{
-    return fetchRequest({url:'/zones/verify', method:'POST', body:{clients_id, clients_id}});
+    return fetchRequest({url:'/zones/verify', method:'POST', body:{clients_id: clients_id}});
 }

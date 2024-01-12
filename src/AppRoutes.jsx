@@ -22,6 +22,10 @@ import UsersForm from './pages/admin/users/Form';
 import ZonesList from './pages/services/zones/List';
 import StatesList from './pages/services/states/List';
 
+import ServicesList from './pages/services/List';
+import ServicesForm from './pages/services/Form';
+
+
 //verifica si se ha iniciado sesion
 const ProtectedRoute = ()=>{
 	let auth = isAuth();
@@ -92,6 +96,9 @@ const AppRoutes = (props)=>{
 					<Route path={'/services/states/list'} exact element={<StatesList {...props} />} />
 
 
+					{/** SERVICIOS */}
+					<Route path='/services/list' exact element={<ServicesList {...props} />} />
+					<Route path='/services/new' exact element={<ServicesForm {...props} />} />
 
 					<Route path={'/*'} element={<NotFound />} />
 				</Route>

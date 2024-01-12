@@ -204,6 +204,27 @@ export const showCtrlError = (id)=>{
 };
 
 /**
+ * marca los elementos select requeridos cuando el campo esta vacio
+ * @param {*} id identificador del elemento
+ * @param {*} value valor del campo
+ */
+export const addErrorToSelectedField = (id, value)=>{
+	let field = document.getElementById(id);
+	let valid = true;
+            
+	if(field !== null){
+		if(value === ''){
+			field.classList.add('error');
+			valid = false
+		}else{
+			field.classList.remove('error');
+		}
+	}	
+
+	return valid;
+}
+
+/**
  * Muestra modal de confirmacion para realizar alguna accion como por ejemplo eliminar un registro
  * @param {*} obj datos de variables
  */
@@ -237,4 +258,14 @@ export const swalAction = ({
 			}
 		}
 	});
+}
+
+export const getDevice = ()=>{
+	let navegador = navigator.userAgent;
+	let movile = false;
+	if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
+		movile = true;
+	}
+
+	return movile;
 }

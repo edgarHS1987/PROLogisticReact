@@ -38,7 +38,8 @@ const Layout = ({loader, reset})=>{
         {title:'Clientes', submenu:[], show:true, open:false, active:true, url:'/clients/list', icon:<FaUser />},
         {title:'Servicios', show:true, active:false, open:false, icon:<FaMapLocationDot className='icon-menu' />, submenu:[
             {title:'Estados', show:true, active:false, url:'/services/states/list'},
-			{title:'Zonas', show:true, active:false, url:'/services/zones/list'}
+			{title:'Zonas', show:true, active:false, url:'/services/zones/list'},
+            {title:'Servicios', show:true, active:false, url:'/services/list'}
 		]},
 		{title:'Admin', show:getPermission('admin_menu'), active:false, open:false, icon:<GearCircleIcon />, submenu:[
 			{title:'Permisos', show:getPermission('admin_permissions'), active:false, url:'/admin/permissions/list'},
@@ -143,7 +144,7 @@ const Layout = ({loader, reset})=>{
 	return(
 		<Grid fluid className="p-0 m-0">
 			{showSidebar ? // muuestra menu lateral				
-				<Col xsHidden smHidden mdHidden lg={expandMenu ? 4 : 1} className="border p-0 m-0">
+				<Col xsHidden smHidden mdHidden lg={expandMenu ? 3 : 1} className="border p-0 m-0">
 					<Sidebar 
 						expanded={expandMenu}
 						menu={sidebarMenu}
@@ -162,7 +163,7 @@ const Layout = ({loader, reset})=>{
 				</Drawer>
 			}
 
-			<Col xs={24} lg={expandMenu ? 20 : 23} className="full-height p-0 m-0">
+			<Col xs={24} lg={expandMenu ? 21 : 23} className="full-height p-0 m-0">
 				 <Grid fluid className="border p-0 m-0">
                     <Navbar 
                     	user={userName} 
