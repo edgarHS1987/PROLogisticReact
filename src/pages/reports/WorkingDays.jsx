@@ -4,7 +4,8 @@ import Title from '../../components/Title';
 
 export const WorkingDays = () => {
 
-  const {docs,isLoading} = useFetchData( info.title , info.driver, open );
+  const [report,setReport] = useState( 'workDays' );
+  const {dataSet,isLoading} = useFetchData( report );
 
   return (
     <>
