@@ -207,27 +207,68 @@ export const showCtrlError = (id)=>{
 };
 
 /**
+ * marca los elementos select requeridos cuando el campo esta vacio
+ * @param {*} id identificador del elemento
+ * @param {*} value valor del campo
+ */
+export const addErrorToSelectedField = (id, value)=>{
+	let field = document.getElementById(id);
+	let valid = true;
+            
+	if(field !== null){
+		if(value === ''){
+			field.classList.add('error');
+			valid = false
+		}else{
+			field.classList.remove('error');
+		}
+	}	
+
+	return valid;
+}
+
+/**
  * Muestra modal de confirmacion para realizar alguna accion como por ejemplo eliminar un registro
  * @param {*} obj datos de variables
  */
-export const swalAction = (obj)=>{
+export const swalAction = ({
+	title,
+	text,
+	icon,
+	textConfirm,
+	colorCancel = 'var(--rs-red-500)',
+	textCancel = 'No, Cancelar',
+	fn,
+	fnCancel=()=>{},
+	values
+})=>{
 	Swal.fire({
-		title 				: obj.title,
-		text 				: obj.text,
-		icon 				: obj.icon,
+		title 				: title,
+		text 				: text,
+		icon 				: icon,
 		showConfirmButton	: true,
 		showCancelButton	: true,
-		confirmButtonText	: obj.textConfirm,
+		confirmButtonText	: textConfirm,
 		confirmButtonColor  : 'var(--rs-blue-500)',
-		cancelButtonColor	: obj.colorCancel || 'var(--rs-red-500)',
-		cancelButtonText	: obj.textcancel
+		cancelButtonColor	: colorCancel,
+		cancelButtonText	: textCancel
 	}).then(result => {
 		if(result.isConfirmed){
-			obj.fn(obj.values);
+			fn(values);
 		}else{
-			if(obj.fnCancel !== undefined){
-				obj.fnCancel(obj.values);
+			if(fnCancel !== undefined){
+				fnCancel(values);
 			}
 		}
 	});
+}
+
+export const getDevice = ()=>{
+	let navegador = navigator.userAgent;
+	let movile = false;
+	if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
+		movile = true;
+	}
+
+	return movile;
 }

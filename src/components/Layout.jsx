@@ -7,12 +7,14 @@ import DashboardIcon from '@rsuite/icons/legacy/Dashboard';
 import GearCircleIcon from '@rsuite/icons/legacy/GearCircle';
 import MemberIcon from '@rsuite/icons/Member';
 import DetailIcon from '@rsuite/icons/Detail';
+import { FaMapLocationDot } from "react-icons/fa6";
 
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 
 import {decript} from '../libs/functions';
 import SystemContext from '../context/SystemContext';
+import { FaUser } from 'react-icons/fa';
 
 const Layout = ({loader, reset})=>{
     const navigate = useNavigate();
@@ -34,7 +36,13 @@ const Layout = ({loader, reset})=>{
 		 * icon: icono de menu o submenu
 		 *
 		 * */
-		{title:'Dashboard', submenu:[], show:true, open:false, active:true, url:'/', icon:<DashboardIcon />},
+		{title:'Dashboard', submenu:[], show:true, open:false, active:true, url:'/', icon:<DashboardIcon />},        
+        {title:'Clientes', submenu:[], show:true, open:false, active:true, url:'/clients/list', icon:<FaUser />},
+        {title:'Servicios', show:true, active:false, open:false, icon:<FaMapLocationDot className='icon-menu' />, submenu:[
+            {title:'Estados', show:true, active:false, url:'/services/states/list'},
+			{title:'Zonas', show:true, active:false, url:'/services/zones/list'},
+            {title:'Servicios', show:true, active:false, url:'/services/list'}
+		]},
 		{title:'Admin', show:getPermission('admin_menu'), active:false, open:false, icon:<GearCircleIcon />, submenu:[
 			{title:'Permisos', show:getPermission('admin_permissions'), active:false, url:'/admin/permissions/list'},
             {title:'Roles', show:getPermission('admin_roles'), active:false, url:'/admin/roles/list'},
@@ -47,6 +55,8 @@ const Layout = ({loader, reset})=>{
 			{title:'Dias Activos Drivers', show:getPermission('admin_permissions'), active:false, url:'/reports/drivers/workingDays'},
             {title:'Servicios Asginados', show:getPermission('admin_permissions'), active:false, url:'/reports/services/assigned'},
             {title:'Estatus Servicios', show:getPermission('admin_permissions'), active:false, url:'/reports/services/status'},
+            {title:'Usuarios', show:getPermission('admin_users'), active:false, url:'/admin/users/list'},
+            {title:'Configuración', show:getPermission('admin_users'), active:false, url:'/admin/configuration/list'},
 		]}
 	]);
 
@@ -145,7 +155,7 @@ const Layout = ({loader, reset})=>{
 	return(
 		<Grid fluid className="p-0 m-0">
 			{showSidebar ? // muuestra menu lateral				
-				<Col xsHidden smHidden mdHidden lg={expandMenu ? 4 : 1} className="border p-0 m-0">
+				<Col xsHidden smHidden mdHidden lg={expandMenu ? 3 : 1} className="border p-0 m-0">
 					<Sidebar 
 						expanded={expandMenu}
 						menu={sidebarMenu}
@@ -164,7 +174,7 @@ const Layout = ({loader, reset})=>{
 				</Drawer>
 			}
 
-			<Col xs={24} lg={expandMenu ? 20 : 23} className="full-height p-0 m-0">
+			<Col xs={24} lg={expandMenu ? 21 : 23} className="full-height p-0 m-0">
 				 <Grid fluid className="border p-0 m-0">
                     <Navbar 
                     	user={userName} 

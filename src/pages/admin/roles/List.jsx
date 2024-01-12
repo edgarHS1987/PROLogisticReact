@@ -173,7 +173,7 @@ const RolesList = ({loader})=>{
             text            : 'Desea eliminar el registro?',
             icon            : 'warning',
             textConfirm     : 'Si, eliminar',
-            textcancel      : 'No, cancelar',
+            textCancel      : 'No, cancelar',
             values          : id,
             fn              : deleteItem
         });
