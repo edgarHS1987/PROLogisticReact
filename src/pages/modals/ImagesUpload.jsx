@@ -1,25 +1,18 @@
 import React, { useState,useEffect } from 'react'
-import { Modal, Button, ButtonToolbar, Placeholder,Uploader } from 'rsuite';
+import { Modal, Button, ButtonToolbar, Placeholder,Uploader,Divider } from 'rsuite';
 import {forwardRef, useImperativeHandle, useRef} from 'react';
-import {driversUploadDocument} from '../../services/drivers'
-import {uploadFile} from '../../helpers/uploadDocument';
+import {driversUploadDocument,driverClearFolder} from '../../services/drivers'
+import { uploadFile } from '../../helpers/uploadDocument';
 
 import { useFetchFiles } from '../../hooks/useFetchFiles';
-import { useCountFiles } from '../../hooks/useCountFiles';
-import { file } from 'jszip';
 
 export const ImagesUpload = forwardRef(function ImagesUpload( 
   {info,handleCountFilesINE,handleCountFilesLic,handleCountFilesComprobante,handleCountFilesSAT,loader}, ref ) {
 
   const [files, setFiles] = useState([]);
-  const {docs,isLoading} = useFetchFiles( info.title , info.driver );
-  // const {counterFiles,counterReady} = useCountFiles( info.title,files );
-
-  const [filesIdentificacion, setFilesIdentificacion] = useState([]);
-  const [filesSAT, setFilesSAT] = useState([]);
-  const [filesLicencia, setFilesLicencia] = useState([]);
-  const [filesComprobante, setFilesComprobante] = useState([]);
   const [open, setOpen] = React.useState(false);
+  const {docs,isLoading} = useFetchFiles( info.title , info.driver,open );
+  
 
   useImperativeHandle(ref, () => {
     return {
@@ -41,70 +34,24 @@ export const ImagesUpload = forwardRef(function ImagesUpload(
   }
 
 
-  const prepareToSave = () =>{
-    console.log(files);
-    if (info.title === 'Identificacion Oficial') {
-      setFilesIdentificacion(files);
-    }else if( info.title === 'Licencia Conducir' ){
-      setFilesLicencia(files);
-      console.log("cerrando " + filesLicencia);
-    }else if( info.title === 'Comprobante Domicilio' ){
-      setFilesComprobante(files)
-    }else if( info.title === 'Constancia Situacion Fiscal' ){
-      setFilesSAT(files)
+  const prepareToSave = async () =>{
+
+    const obj={
+      idDriver: info.driver,
+      tipo: info.title,
     }
 
+    const resDelete = await driverClearFolder(obj); 
+
     files.forEach(function (elemento) {
+      //console.log(elemento);
       let obj = uploadFile ( elemento,info.driver,info.title );
     });
 
     setOpen(false);
+    
 
   };
-
-  const numberFiles = () =>{
-
-    files.forEach(function (elemento) {
-      count = count +1;
-    });
-    numINE = count;
-
-    handleFiles( numINE,numSAT,numLicencia,numComprobante );
-
-  }
-
-  const numFiles = () =>{
-    let count = 0, numINE=0, numSAT=0, numLicencia=0, numComprobante=0 ;
-
-    filesIdentificacion.forEach(function (elemento) {
-      console.log("here");
-        count = count +1;
-    });
-    numINE = count;
-
-    count=0;
-    filesSAT.forEach(function (elemento) {
-      count = count +1;
-    });
-    numSAT = count;
-
-    count=0;
-    filesLicencia.forEach(function (elemento) {
-      count = count +1;
-    });
-    numLicencia = count;
-
-    count=0;
-    filesComprobante.forEach(function (elemento) {
-      count = count +1;
-    });
-    numComprobante = count;
-
-    handleFiles( numINE,numSAT,numLicencia,numComprobante );
-
-  }
-
-
   
 
   useEffect(() => {
@@ -114,33 +61,21 @@ export const ImagesUpload = forwardRef(function ImagesUpload(
       if (isLoading === false) {
 
         setFiles(docs);
-        
-        // numFiles();
         loader.current.handleClose();
 
       }else if(isLoading === true){
-
-        setFiles([]);
         loader.current.handleShow('Cargando...');
 
       }
-
-      // if ( counterReady ) {
-      //   if ( info.title === 'Identificacion Oficial' ) {
-      //     // handleFiles( counterFiles,0,0,0 );
-      //   }else if( info.title === 'Licencia Conducir' ){
-      //     // setFilesLicencia( counterFiles );
-      //   }else if( info.title === 'Comprobante Domicilio' ){
-      //     // setFilesComprobante( counterFiles );
-      //   }else if( info.title === 'Constancia Situacion Fiscal' ){
-      //     // setFilesSAT( counterFiles );
-      //   }
-      // }
-      
-
     }
+      
+  },[isLoading]);
 
-    if ( open === false ) {
+
+
+  useEffect(() => {
+
+    //if ( open === false ) {
       if ( info.title === 'Identificacion Oficial' ) {
         handleCountFilesINE( files.length );
       }else if( info.title === 'Licencia Conducir' ){
@@ -150,10 +85,11 @@ export const ImagesUpload = forwardRef(function ImagesUpload(
       }else if( info.title === 'Constancia Situacion Fiscal' ){
         handleCountFilesSAT( files.length );
       }
-    }
+      
+    //}
         
     
-  },[isLoading,open]);
+  },[files]);
 
 
 
@@ -168,8 +104,10 @@ export const ImagesUpload = forwardRef(function ImagesUpload(
           <Modal.Header closeButton={false}>
             <Modal.Title>Archivos - { info.title }</Modal.Title>
           </Modal.Header>
+          <Divider />
           <Modal.Body>
             <Uploader 
+                url=""
                 accept="image/*,.pdf" 
                 name = 'archivo'
                 fileList={files}

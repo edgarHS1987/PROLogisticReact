@@ -53,7 +53,7 @@ export const fetchRequest = ({
 	}).then(res => {
         if(res.ok){
 
-            return sendFile ? res.blob() :res.json();
+            return res.json();
         }else{
 			return res.json();
             res.text().then(msg => {

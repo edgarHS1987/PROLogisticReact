@@ -7,6 +7,7 @@ import Home from './pages/Home';
 
 import DriversList from './pages/drivers/List';
 import NewDriver from './pages/drivers/NewDriver';
+import WorkingDays from './pages/reports/WorkingDays';
 
 import PermissionsList from './pages/admin/permissions/List';
 import RolesList from './pages/admin/roles/List';
@@ -55,8 +56,9 @@ const AppRoutes = (props)=>{
 
 					<Route path={'/drivers/new'} exact element={<NewDriver {...props} />} />
 
-
 					<Route path={'/drivers/edit/:id'} exact element={<NewDriver {...props} />} />
+
+					<Route path={'/reports/drivers/workingDays'} exact element={<WorkingDays {...props} />} />
 
 					{getPermission('admin_permissions') && (
 						<Route path={'/admin/permissions/list'} exact element={<PermissionsList {...props} />} />

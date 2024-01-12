@@ -3,16 +3,16 @@ import { useParams } from 'react-router-dom';
 import {forwardRef, useImperativeHandle, useRef} from 'react';
 import {ImagesUpload} from '../modals/ImagesUpload';
 
-import {FileViewer} from '../drivers/Test';
 import {useForm} from '../../hooks/useForm';
 import {isValidForm} from '../../helpers/validForm';
 import Toast from '../../components/Toast';
 import {driverDocumentsSave,driverDocumentsId} from  '../../services/drivers'
 
-import { Form,DatePicker, Button,Grid, Row, Col,Badge  } from 'rsuite';
+import { Form,DatePicker, Button,Grid, Row, Col,Badge,IconButton,Stack  } from 'rsuite';
 import '../../assets/css/steps.css';
+import AttachmentIcon from '@rsuite/icons/legacy/Attachment';
 
-import { useFetchFiles } from '../../hooks/useFetchFiles';
+import {VisorDocuments} from '../modals/VisorDocuments';
 
 
 export const DocsDriverForm = ({idDriver,loader}) => {
@@ -48,15 +48,20 @@ export const DocsDriverForm = ({idDriver,loader}) => {
   }
 
   const handleChangeLic = (date) =>{
-    console.log(date);
     setLicenciaVigencia(date);
   }
 
   const modalRef = useRef(null);
+  const visorRef = useRef(null);
 
   const handleModal = (tipoDocument) => {
     setTipo(tipoDocument);
     modalRef.current.handleOpen( tipoDocument );
+  };
+
+  const handleVisor = (tipoDocument) => {
+    setTipo(tipoDocument);
+    visorRef.current.handleOpen( tipoDocument );
   };
 
   const handleSubmit = () => {
@@ -105,7 +110,6 @@ export const DocsDriverForm = ({idDriver,loader}) => {
       response = await driverDocumentsSave(obj);
     }
     
-    console.log(response);
     if(response){
 
       if( response[0].error !== undefined ){
@@ -123,16 +127,16 @@ export const DocsDriverForm = ({idDriver,loader}) => {
 
   const getData = async (idData)=>{
 
-    //await loader.current.handleShow('Cargando...');
+    await loader.current.handleShow('Cargando...');
       // const response1 = await  driverDocumentGet(idData);
       // console.log(response1);
 
       const response = await  driverDocumentsId(idData);
       if (response) {
         setTextButton("Actualizar");  
-      }
+      } 
       
-      response.forEach(function (documentDriver) {
+      response.driver_info.forEach(function (documentDriver) {
         if (documentDriver.type == 'INE') {
           const fecha = new Date(documentDriver.expiration_date);
           setINEVigencia(fecha);
@@ -142,7 +146,19 @@ export const DocsDriverForm = ({idDriver,loader}) => {
           setLicenciaVigencia(fecha);
         }
       }); 
-    //await loader.current.handleClose();
+
+      response.document_counts.forEach( function (numberFiles) {
+        if ( numberFiles.type == 'INE' ) {  
+          setNumFilesINE( numberFiles.count );
+        }else if( numberFiles.type == 'ConstanciaSAT' ){
+          setNumFilesSAT( numberFiles.count );
+        }else if( numberFiles.type == 'Comprobante' ){
+          setNumFilesComprobante( numberFiles.count );
+        }else if( numberFiles.type == 'Licencia' ){
+          setNumFilesLicencia( numberFiles.count );
+        }
+      });
+    await loader.current.handleClose();
 
   }
 
@@ -169,34 +185,44 @@ export const DocsDriverForm = ({idDriver,loader}) => {
         loader={loader}
       />
       
+      <VisorDocuments ref={visorRef} info={{title: tipo,driver: idDriver}}
+        loader={loader}
+
+      />
+      
       <br />
       <Form className={"docsDriver"}>
 
       <Row className="show-grid">
-        <Col xs={6}>
-          <Form.ControlLabel>Identificacion Oficial</Form.ControlLabel>
-        </Col>
-        <Col xs={4}>
-          <Badge content={numFilesINE} color="red">
-            <Button color="cyan" appearance="default" size="xs" onClick={() => handleModal('Identificacion Oficial')}>
-              Agregar Archivos
+      <Col xs={6}>
+        <Stack spacing={6}>
+            <Form.ControlLabel>Identificacion Oficial:</Form.ControlLabel>
+        </Stack>
+      </Col>
+      <Col xs={6}>
+        <Stack spacing={30}>
+            <Badge content={numFilesINE} color="blue">
+              <IconButton color="cyan" icon={<AttachmentIcon />} appearance="default" size="xs" onClick={() => handleModal('Identificacion Oficial')}>
+                Agregar Archivos
+              </IconButton>
+            </Badge>
+
+            <Button color="cyan" appearance="default" size="xs"
+              onClick={() => handleVisor('Identificacion Oficial')}>
+              Ver Archivos
             </Button>
-          </Badge>
+
+            <Form.Group controlId="INE">
+              <DatePicker size="xs" placeholder="Vigencia" style={{width:120}}
+              placement="rightStart"
+              name='INEVigencia'
+              onChange={handleChangeINE}
+              value={INEVigencia}
+              required
+            />
+            </Form.Group>
+        </Stack>
         </Col>
-        <Col xs={7}>
-          <Form.Group controlId="INE">
-            <DatePicker size="xs" placeholder="Vigencia" style={{width:150}} 
-            placement="rightStart"
-            name='INEVigencia'
-            onChange={handleChangeINE}
-            value={INEVigencia}
-            required
-          />
-          </Form.Group>
-          
-        </Col>
-        
-        
       </Row>
 
       <br />
@@ -205,16 +231,23 @@ export const DocsDriverForm = ({idDriver,loader}) => {
         <Col xs={6}>
           <Form.ControlLabel>Constancia Situacion Fiscal</Form.ControlLabel>
         </Col>
-        <Col xs={4}>
-          <Form.Group controlId="SAT">
-            <Badge content={numFilesSAT} color="red">
-              <Button color="cyan" appearance="default" size="xs" onClick={() => handleModal('Constancia Situacion Fiscal')}>
-                Agregar Archivos
+
+        <Col xs={6}>
+          <Stack spacing={30}>
+            <Form.Group controlId="SAT">
+              <Badge content={numFilesSAT} color="blue">
+                <IconButton icon={<AttachmentIcon />} color="cyan" appearance="default" size="xs" onClick={() => handleModal('Constancia Situacion Fiscal')}>
+                  Agregar Archivos
+                </IconButton>
+                </Badge>
+            </Form.Group>
+
+              <Button color="cyan" appearance="default" size="xs"
+                onClick={() => handleVisor('Constancia Situacion Fiscal')}>
+                Ver Archivos
               </Button>
-              </Badge>
-          </Form.Group>
-          
-        </Col>       
+          </Stack>
+        </Col>
       </Row>
 
       <br />
@@ -223,25 +256,31 @@ export const DocsDriverForm = ({idDriver,loader}) => {
         <Col xs={6}>
           <Form.ControlLabel>Licencia Conducir</Form.ControlLabel>
         </Col>
-        <Col xs={4}>
-          <Badge content={numFilesLicencia} color="red">
-            <Button color="cyan" appearance="default" size="xs" onClick={() => handleModal('Licencia Conducir')}>
-              Agregar Archivos
+        <Col xs={6}>
+          <Stack spacing={30}>
+            <Badge content={numFilesLicencia} color="blue">
+              <IconButton icon={<AttachmentIcon />} color="cyan" appearance="default" size="xs" onClick={() => handleModal('Licencia Conducir')}>
+                Agregar Archivos
+              </IconButton>
+            </Badge>
+
+            <Button color="cyan" appearance="default" size="xs"
+              onClick={() => handleVisor('Licencia Conducir')}>
+              Ver Archivos
             </Button>
-          </Badge>
+
+            <Form.Group controlId="licencia">
+                <DatePicker size="xs" placeholder="Vigencia" style={{width:120}} placement="rightStart"
+                  name='licenciaVigencia'
+                  onChange={handleChangeLic}
+                  value={licenciaVigencia}
+                  required
+                />
+            </Form.Group>
+
+            
+          </Stack>
         </Col>
-        <Col xs={7}>
-          <Form.Group controlId="licencia">
-            <DatePicker size="xs" placeholder="Vigencia" style={{width:150}} placement="rightStart"
-              name='licenciaVigencia'
-              onChange={handleChangeLic}
-              value={licenciaVigencia}
-              required
-            />
-          </Form.Group>
-          
-        </Col>
-        
         
       </Row>
 
@@ -251,12 +290,19 @@ export const DocsDriverForm = ({idDriver,loader}) => {
         <Col xs={6}>
           <Form.ControlLabel>Comprobante de Domicilio</Form.ControlLabel>
         </Col>
-        <Col xs={4}>
-          <Badge content={numFilesComprobante} color="red">
-            <Button color="cyan" appearance="default" size="xs" onClick={() => handleModal('Comprobante Domicilio')}>
-                Agregar Archivos
+        <Col xs={6}>
+          <Stack spacing={30}>
+            <Badge content={numFilesComprobante} color="blue">
+              <IconButton color="cyan" icon={<AttachmentIcon />} appearance="default" size="xs" onClick={() => handleModal('Comprobante Domicilio')}>
+                  Agregar Archivos
+              </IconButton>
+            </Badge>
+
+            <Button color="cyan" appearance="default" size="xs"
+              onClick={() => handleVisor('Comprobante Domicilio')}>
+              Ver Archivos
             </Button>
-          </Badge>
+            </Stack>
         </Col>
         
       </Row>

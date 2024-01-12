@@ -5,11 +5,13 @@ export const uploadFile = async( file,id,tipo )=>{
     let error = '';
     let msg = '';
 
+
     let obj = new FormData();
     obj.append('file', file.blobFile);
     obj.append('idDriver', id)
     obj.append('tipo', tipo)
     
+    console.log(obj);
     const response = await driversUploadDocument(obj);
 
     if(response){
