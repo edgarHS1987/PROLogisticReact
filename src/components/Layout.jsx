@@ -5,6 +5,8 @@ import {Col, Grid, Drawer} from 'rsuite';
 
 import DashboardIcon from '@rsuite/icons/legacy/Dashboard';
 import GearCircleIcon from '@rsuite/icons/legacy/GearCircle';
+import MemberIcon from '@rsuite/icons/Member';
+import DetailIcon from '@rsuite/icons/Detail';
 
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
@@ -37,6 +39,14 @@ const Layout = ({loader, reset})=>{
 			{title:'Permisos', show:getPermission('admin_permissions'), active:false, url:'/admin/permissions/list'},
             {title:'Roles', show:getPermission('admin_roles'), active:false, url:'/admin/roles/list'},
             {title:'Usuarios', show:getPermission('admin_users'), active:false, url:'/admin/users/list'}
+		]},
+        {title:'Drivers', show:getPermission('admin_menu'), active:false, open:false, icon:<MemberIcon />, submenu:[
+			{title:'Ver', show:getPermission('admin_permissions'), active:false, url:'/drivers/'},
+		]},
+        {title:'Reportes', show:getPermission('admin_menu'), active:false, open:false, icon:<DetailIcon />, submenu:[
+			{title:'Dias Activos Drivers', show:getPermission('admin_permissions'), active:false, url:'/reports/drivers/workingDays'},
+            {title:'Servicios Asginados', show:getPermission('admin_permissions'), active:false, url:'/reports/services/assigned'},
+            {title:'Estatus Servicios', show:getPermission('admin_permissions'), active:false, url:'/reports/services/status'},
 		]}
 	]);
 

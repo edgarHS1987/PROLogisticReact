@@ -4,6 +4,7 @@ import { Steps, Panel, Placeholder, ButtonGroup, Button } from 'rsuite';
 import NewDriverForm from './NewDriverForm';
 import FiscalDataDriver from './FiscalDataDriver';
 import DocsDriverForm from './DocsDriverForm';
+import DocsVehicle from './DocsVehicle';
 import '../../assets/css/steps.css';
 
 const StepsForRegister = ({loader}) => {
@@ -12,7 +13,13 @@ const StepsForRegister = ({loader}) => {
   const [idDriver,setIdDriver] = useState(0);
     
   const onChange = nextStep => {
-       setStep(nextStep < 0 ? 0 : nextStep > 3 ? 3 : nextStep);
+    
+    if ( idDriver === undefined || idDriver === 0 ) {
+      console.log('no hay driver registrado');
+    }else{
+      setStep(nextStep < 0 ? 0 : nextStep > 3 ? 3 : nextStep);
+    }
+    
   };
 
   const handleIdDriver = (id) =>{
@@ -55,7 +62,7 @@ const StepsForRegister = ({loader}) => {
               )
             } else if (step === 3){
               return (
-                <p>Vehiculo</p>
+                <DocsVehicle handleId = {handleIdDriver} idDriver={idDriver} loader={loader}/>
               )
             }
           })()

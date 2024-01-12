@@ -7,9 +7,7 @@ export const isValidForm = (element)=>{
 			
 			let isFormValid = true;
 			ctrls.forEach(ctrl => {
-				console.log("aqui ");
 				if(ctrl.required){
-					console.log("si requireed ");
 					const isInputValid = showCtrlError(ctrl.id);
 
 					if (!isInputValid) {

@@ -2,10 +2,11 @@ import { useEffect, useState} from 'react';
 import {fetchBlob,driverListDocuments} from '../services/drivers';
 //import {obtenerDocsConBlobAsync, getBlob} from '../helpers/uploadDocument';
 
-export const useFetchFiles = ( tipo,idDriver ) =>{
+export const useFetchFiles = ( tipo,idDriver,open ) =>{
     
-    const [docs,setDocs] = useState( [] ); 
+    const [docs,setDocs] = useState( [] );      
     const [loading,setLoading] = useState( '' );
+    // const [tipoPar,setTipoPar] = useState(tipo);
 
     async function getBlob( doc ) {
         let blobFi = await fetchBlob( doc,tipo,idDriver  );
@@ -37,7 +38,7 @@ export const useFetchFiles = ( tipo,idDriver ) =>{
             setDocs( docsConBlob );
             setLoading( false );
         })
-        .catch((error) => {
+        .catch((error) => { 
             console.error('Error al obtener blobs:', error);
             setLoading(true);
         });
@@ -45,15 +46,18 @@ export const useFetchFiles = ( tipo,idDriver ) =>{
     
 
     useEffect( () => {
-        if (tipo) {
+        // console.log("en efect");
+        // console.log(tipo);
+        if ( tipo && open==true) {
             getDocs();    
+
+            return () => {
+                setDocs([]);
+                setLoading( '' );
+            }; 
         }
-        
-        return () => {
-            setDocs([]);
-            setLoading( true );
-        };
-    },[tipo])
+
+    },[open])
 
     return{
         docs: docs,
