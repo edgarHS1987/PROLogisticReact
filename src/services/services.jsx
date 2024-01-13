@@ -16,7 +16,7 @@ export const servicesSave = (obj)=>{
 }
 
 /**
- * 
+ * Obtiene el total de servicios sin asignar 
  * @param {*} id identificador del cliente
  * @returns 
  */
@@ -25,7 +25,7 @@ export const servicesTotalUnsigned = (id)=>{
 }
 
 /**
- * 
+ * Obtiene el listado de servicios no asignados
  * @param {*} obj {clients_id}
  * @returns 
  */

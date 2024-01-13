@@ -1,19 +1,25 @@
 import { useEffect, useState } from "react";
 import { Col, Grid } from "rsuite";
+import { useNavigate } from "react-router-dom";
+
 import { FaCar } from "react-icons/fa";
+import { FiPackage } from "react-icons/fi";
+
+import Button from "../components/Button";
+import Toast from "../components/Toast";
 
 import { zonesAssignDriver, zonesUnsignedDrivers } from "../services/zones";
+import { servicesTotalUnsigned } from "../services/services";
 import { decript, swalAction } from "../libs/functions";
-import Button from "../components/Button";
-import { useNavigate } from "react-router-dom";
-import Toast from "../components/Toast";
 
 const Home = ({loader})=>{
 	const navigate = useNavigate();
 	const [driverUnsignedZone, setDriverUnsignedZone] = useState([]);
+	const [serviceUnsigned, setServiceUnsigned] = useState(0);
 
 	const onLoad = ()=>{
 		getDriversUnsigned();
+		getServicesUnsigned();
 	}
 
 	const getDriversUnsigned = async ()=>{
@@ -55,6 +61,14 @@ const Home = ({loader})=>{
 		await loader.current.handleClose();
 	}
 
+	const getServicesUnsigned = async ()=>{
+		let clients_id = decript('clients_id');
+		let response = await servicesTotalUnsigned(clients_id);
+		if(response !== undefined){
+			setServiceUnsigned(response);
+		}
+	}
+
 	useEffect(()=>{
 		onLoad();
 	},[]);
@@ -65,7 +79,7 @@ const Home = ({loader})=>{
 				<Col xs={24} className="mt-3">
 					{driverUnsignedZone.length > 0 && (
 						<Col xs={24} md={6} className="p-2 shadow rounded">
-							<Col xs={24} className="flex align-items-center pt-2 pb-2" style={{background:'var(--primary)', color:'#fff'}}>
+							<Col xs={24} className="flex align-items-center pt-2 pb-2 rounded" style={{background:'var(--primary)', color:'#fff'}}>
 								<Col xs={24} md={6}>
 									<FaCar size={60} />
 								</Col>
@@ -81,6 +95,38 @@ const Home = ({loader})=>{
 									classes="full-width"
 									action={()=>onAssignZoneToDriver()}
 								/>
+							</Col>
+						</Col>
+					)}
+
+					{serviceUnsigned > 0 && (
+						<Col xs={24} md={6} className="p-2 shadow rounded">
+							<Col xs={24} className="flex align-items-center pt-2 pb-2 rounded" style={{background:'var(--primary)', color:'#fff'}}>
+								<Col xs={24} md={6}>
+									<FiPackage size={60} />
+								</Col>
+								<Col xs={24} md={18} className="text-end">
+									<span style={{display:'block'}}>{serviceUnsigned}</span>
+									<label>Servicios sin asignar</label>
+								</Col>
+							</Col>
+							<Col xs={24} className="pt-2">
+								<Col xs={24} md={12}>
+									<Button 
+										title="Asignar a driver" 
+										appearance="ghost"
+										classes="full-width"
+										//action={()=>onAssignZoneToDriver()}
+									/>
+								</Col>
+								<Col xs={24} md={12}>
+									<Button 
+										title="Ir a registro" 
+										appearance="ghost"
+										classes="full-width"
+										action={()=>navigate('/services/new')}
+									/>
+								</Col>
 							</Col>
 						</Col>
 					)}

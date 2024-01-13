@@ -18,7 +18,6 @@ const ModalServices = forwardRef(({
         setOpen(false);
     }
 
-    
     useImperativeHandle(ref, ()=>({
         handleShow
     }));

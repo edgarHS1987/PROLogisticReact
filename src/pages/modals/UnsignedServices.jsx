@@ -24,7 +24,8 @@ const ModalUnsignedService = forwardRef((props, ref)=>{
     }));
 
     return (
-        <Modal size="xs" open={open} backdrop="static" keyboard={true} onClose={()=>setOpen(false)}>
+        <Modal size="xs" open={open} onClose={()=>setOpen(false)}>
+            <Modal.Title></Modal.Title>
             <Modal.Body>
                 <Grid fluid>
                     <Col xs={24} className="flex justify-content-center">

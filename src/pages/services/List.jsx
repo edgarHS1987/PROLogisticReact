@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Col, Divider, Grid } from "rsuite";
+import { Col, Divider, Grid, Message } from "rsuite";
 
 import Title from "../../components/Title"
 import Button from "../../components/Button";
@@ -8,7 +8,7 @@ import Button from "../../components/Button";
 import { decript, getDevice } from "../../libs/functions";
 import { servicesTotalUnsigned } from "../../services/services";
 
-import ModalUnsignedService from "../modals/Unsigned";
+import ModalUnsignedService from "../modals/UnsignedServices";
 
 const ServicesList = ()=>{
     const unsignedModal = useRef();
@@ -48,7 +48,11 @@ const ServicesList = ()=>{
             </Grid>            
             <Divider style={{marginTop:0}} />
             <Grid fluid className='p-4 shadow rounded form-content'>
-                <Col xs={24} className="p-2 flex justify-content-end">
+                {totalServiceUnsigned > 0 && (
+                    <Message style={{padding:5}} type="error">Servicios sin asignar: {totalServiceUnsigned}</Message>
+                )}
+                
+                <Col xs={24} className="p-2 flex justify-content-end">                    
                     <Button 
                         title="Nuevo"
                         appearance="ghost"

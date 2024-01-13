@@ -452,6 +452,11 @@ const ServicesForm = ({loader})=>{
                                                                                 
                                         <Col xs={24} className="mt-3 text-center">
                                             <Button 
+                                                title="Cancelar"
+                                                classes={isMobile ? "full-width" : ""}
+                                                action={()=>navigate('/services/list')}
+                                            />
+                                            <Button 
                                                 title="Asignar"
                                                 appearance="primary"
                                                 classes={isMobile ? "full-width" : ""}
