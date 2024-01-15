@@ -14,19 +14,40 @@ const ModalConfigureZones = forwardRef(({loader, getData}, ref)=>{
         clients_id:'',
         numberZones:''
     });
+    const [message, setMessage] = useState('');
     const [clients, setClients] = useState([]);
 
-    const handleShow = async ()=>{
+    const handleShow = async (zones = 0)=>{
+        let dataZones = data;
+
         let response = await clientsList();
         if(response){
             await setClients(response);
+
+            dataZones = {
+                ...dataZones,
+                clients_id: response[0].value
+            };
+        }        
+
+        if(zones > 0){
+            dataZones = {
+                ...dataZones,
+                numberZones: zones
+            };
+
+            setMessage('Configuración recomendada de zonas es ('+zones+')');
         }
+
+        await setData(dataZones);
+
         await setOpen(true);
     }
 
     const handleClose = ()=>{
         setOpen(false);
-        setData({clients_id:'', numberZones:''});        
+        setData({clients_id:'', numberZones:''});
+        setMessage('');
     }
 
     const handleChange = (e)=>{
@@ -102,6 +123,12 @@ const ModalConfigureZones = forwardRef(({loader, getData}, ref)=>{
             <Modal.Body>
                 <div className="container-fluid">
                     <Grid fluid className="form-configure">
+                        {message !== '' && (
+                            <Message type='info' style={{fontSize:12}}>
+                                {message}
+                            </Message>
+                        )}
+                        {/*
                         <Col xs={24}>
                             <label>Cliente</label>
                             <Select
@@ -112,6 +139,7 @@ const ModalConfigureZones = forwardRef(({loader, getData}, ref)=>{
                                 required
                             />
                         </Col>
+                        */}
                         <Col xs={24}>
                             <label>Número de zonas</label>
                             <Input 

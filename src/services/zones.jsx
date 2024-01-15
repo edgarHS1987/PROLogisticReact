@@ -15,6 +15,14 @@ export const zonesByClient = (id)=>{
 }
 
 /**
+ * Obtiene zonas configuradas
+ * @param {integer} id identificador de cliente
+ */
+export const zonesConfigured = (id)=>{
+    return fetchRequest({url:'/zones/configured/'+id});
+}
+
+/**
  * Guarda la configuracion de zonas
  */
 export const zonesConfiguring = (obj)=>{
