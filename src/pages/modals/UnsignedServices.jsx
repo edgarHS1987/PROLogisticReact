@@ -1,11 +1,19 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { Col, Grid, Modal } from "rsuite";
-import Button from "../../components/Button";
-import { CiCircleInfo } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
-import { swalAction } from "../../libs/functions";
 
-const ModalUnsignedService = forwardRef((props, ref)=>{
+import { CiCircleInfo } from "react-icons/ci";
+
+import Button from "../../components/Button";
+import Toast from '../../components/Toast';
+
+import { decript, swalAction } from "../../libs/functions";
+import { servicesAssignToDriver } from "../../services/services";
+
+const ModalUnsignedService = forwardRef(({
+    loader,
+    getData
+}, ref)=>{
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [total, setTotal] = useState(0);
@@ -15,8 +23,24 @@ const ModalUnsignedService = forwardRef((props, ref)=>{
         setOpen(true);
     }
 
-    const verifyDrivers = ()=>{
-        
+    const onAssignService = async ()=>{
+        let obj = {
+            clients_id: decript('clients_id')
+        };
+
+        await loader.current.handleShow('Asignando...');
+        let response = await servicesAssignToDriver(obj);
+        if(response){
+            if(response.error){
+                Toast.fire('Error', response.error, 'error');
+            }else{
+                Toast.fire('Correcto', response.message, 'success');
+                setOpen(false);
+                setTotal(0);
+                getData();
+            }
+        }
+        await loader.current.handleClose();
     }
 
     useImperativeHandle(ref, ()=>({
@@ -50,7 +74,7 @@ const ModalUnsignedService = forwardRef((props, ref)=>{
                                 <Button 
                                     title="Asignar"
                                     appearance="ghost"
-                                    action={()=>verifyDrivers()}
+                                    action={()=>onAssignService()}
                                     classes="full-width"
                                 />
                             </Col>

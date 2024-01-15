@@ -1,6 +1,13 @@
 import { fetchRequest } from "../libs/functions";
 
-
+/**
+ * Asignar servicios a drivers
+ * @param {*} obj 
+ * @returns 
+ */
+export const servicesAssignToDriver = (obj)=>{
+    return fetchRequest({url:'/services/assign', method:'POST', body:obj});
+}
 
 /**
  * 

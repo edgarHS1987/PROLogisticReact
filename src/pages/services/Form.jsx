@@ -15,10 +15,10 @@ import ButtonList from "../../components/ButtonList";
 
 import sound from '../../assets/error.mp3';
 
-import { addErrorToSelectedField, getDevice, isValidForm, swalAction } from "../../libs/functions";
+import { addErrorToSelectedField, decript, getDevice, isValidForm, swalAction } from "../../libs/functions";
 import { clientsList } from "../../services/clients";
 import { warehousesShow } from "../../services/warehouses";
-import { servicesDelete, servicesSave, servicesUnsignedByClient } from "../../services/services";
+import { servicesAssignToDriver, servicesDelete, servicesSave, servicesUnsignedByClient } from "../../services/services";
 import ServicesTable from "./ServicesTable";
 import ModalServices from "../modals/Services";
 
@@ -124,7 +124,7 @@ const ServicesForm = ({loader})=>{
         }        
     }
 
-    const getData = async (data)=>{
+    const getData = async (data)=>{        
         let response = await servicesUnsignedByClient({clients_id: data.clients_id});
         if(response){
             let services = data.services;
@@ -354,8 +354,27 @@ const ServicesForm = ({loader})=>{
     }
 
     const openModalService = async ()=>{
-        await getData();
         await modalService.current.handleShow();
+    }
+
+    const onAssignService = async ()=>{
+        let obj = {
+            clients_id: decript('clients_id')
+        };
+
+        await loader.current.handleShow('Asignando...');
+        let response = await servicesAssignToDriver(obj);
+        if(response){
+            if(response.error){
+                Toast.fire('Error', response.error, 'error');
+            }else{                
+                modalService.current.handleClose();
+                Toast.fire('Correcto', response.message, 'success');
+                navigate('/services/list');
+
+            }
+        }
+        await loader.current.handleClose();
     }
     
     useEffect(()=>{
@@ -460,6 +479,7 @@ const ServicesForm = ({loader})=>{
                                                 title="Asignar"
                                                 appearance="primary"
                                                 classes={isMobile ? "full-width" : ""}
+                                                action={()=>onAssignService()}
                                             />
                                         </Col>
                                     </Row>
@@ -474,6 +494,7 @@ const ServicesForm = ({loader})=>{
                 loader={loader}
                 tableConfig={tableConfig}
                 tableList={tableList}
+                onAssignService={onAssignService}
                 ref={modalService}
             />
         </Grid>

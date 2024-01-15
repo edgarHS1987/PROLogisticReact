@@ -10,7 +10,7 @@ import { servicesTotalUnsigned } from "../../services/services";
 
 import ModalUnsignedService from "../modals/UnsignedServices";
 
-const ServicesList = ()=>{
+const ServicesList = ({loader})=>{
     const unsignedModal = useRef();
     
     const navigate = useNavigate();
@@ -27,10 +27,10 @@ const ServicesList = ()=>{
         let response = await servicesTotalUnsigned(clients_id);
 
         if(response){
-            setTotalServiceUnsigned(response);
+            setTotalServiceUnsigned(response.services);
 
-            if(response > 0){
-                unsignedModal.current.handleShow(response);
+            if(response.services > 0){
+                unsignedModal.current.handleShow(response.services);
             }
         }
     }
@@ -66,6 +66,8 @@ const ServicesList = ()=>{
             </Grid>     
 
             <ModalUnsignedService 
+                loader={loader}
+                getData={getServiceUnsigned}
                 ref={unsignedModal}
             />       
         </Grid>

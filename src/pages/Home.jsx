@@ -9,7 +9,7 @@ import Button from "../components/Button";
 import Toast from "../components/Toast";
 
 import { zonesAssignDriver, zonesUnsignedDrivers } from "../services/zones";
-import { servicesTotalUnsigned } from "../services/services";
+import { servicesAssignToDriver, servicesTotalUnsigned } from "../services/services";
 import { decript, swalAction } from "../libs/functions";
 
 const Home = ({loader})=>{
@@ -23,9 +23,7 @@ const Home = ({loader})=>{
 	}
 
 	const getDriversUnsigned = async ()=>{
-		let user_id = decript('user_id');
-
-		let response = await zonesUnsignedDrivers(user_id);
+		let response = await zonesUnsignedDrivers();
 		if(response !== undefined){
 			setDriverUnsignedZone(response);
 		}
@@ -64,10 +62,29 @@ const Home = ({loader})=>{
 	const getServicesUnsigned = async ()=>{
 		let clients_id = decript('clients_id');
 		let response = await servicesTotalUnsigned(clients_id);
-		if(response !== undefined){
-			setServiceUnsigned(response);
+				
+		if(response){
+			setServiceUnsigned(response.services);
 		}
 	}
+
+	const onAssignService = async ()=>{
+        let obj = {
+            clients_id: decript('clients_id')
+        };
+
+		await loader.current.handleShow('Asignando...');
+        let response = await servicesAssignToDriver(obj);
+        if(response){
+            if(response.error){
+                Toast.fire('Error', response.error, 'error');
+            }else{
+                Toast.fire('Correcto', response.message, 'success');
+                getServicesUnsigned();
+            }
+        }
+		await loader.current.handleClose();
+    }
 
 	useEffect(()=>{
 		onLoad();
@@ -116,7 +133,7 @@ const Home = ({loader})=>{
 										title="Asignar a driver" 
 										appearance="ghost"
 										classes="full-width"
-										//action={()=>onAssignZoneToDriver()}
+										action={()=>onAssignService()}
 									/>
 								</Col>
 								<Col xs={24} md={12}>

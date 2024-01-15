@@ -31,8 +31,7 @@ export const zonesVerify = (clients_id)=>{
 
 /**
  * Obtiene el numero de driver que no estan asignados a una zona
- * @param {*} id 
  */
-export const zonesUnsignedDrivers = (id)=>{
-    return fetchRequest({url:'/zones/unsignedDrivers/'+id});
+export const zonesUnsignedDrivers = ()=>{
+    return fetchRequest({url:'/zones/unsignedDrivers'});
 }
