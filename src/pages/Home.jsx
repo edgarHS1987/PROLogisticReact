@@ -101,7 +101,7 @@ const Home = ({loader})=>{
 									<FaCar size={60} />
 								</Col>
 								<Col xs={24} md={18} className="text-end">
-									<span>{driverUnsignedZone.length}</span>
+									<span style={{display:'block'}}>{driverUnsignedZone.length}</span>
 									<label>Conductores sin zona asignada</label>
 								</Col>
 							</Col>

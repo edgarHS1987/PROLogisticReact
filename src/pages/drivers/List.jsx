@@ -29,19 +29,25 @@ const DriversList = ({loader, reset})=>{
             label: 'RFC',
             selector: row => row.col2,
             show:true,
-            width:'20%'
+            width:'15%'
         },
         {
             label: 'Días disponible',
             selector: row => row.col3,
             show:true,
-            width:'20%'
+            width:'15%'
+        },
+        {
+            label: 'Zona',
+            selector: row => row.col4,
+            show:true,
+            width:'15%'
         },
         {
             label: 'Estatus',
-            selector: row => row.col4,
+            selector: row => row.col5,
             show:true,
-            width:'20%'
+            width:'15%'
         },
         {
             label:'',
@@ -111,7 +117,8 @@ const DriversList = ({loader, reset})=>{
 					col1: res.names+' '+res.lastname1+(res.lastname2 !== null ? ' '+res.lastname2 : ''),
 					col2: res.rfc,
                     col3: res.availableDays,
-                    col4: res.status,
+                    col4: res.zone,
+                    col5: res.status,
 				};
 
 				return item;

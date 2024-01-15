@@ -15,7 +15,7 @@ export const servicesAssignToDriver = (obj)=>{
  * @returns 
  */
 export const servicesDelete = (id)=>{
-    return fetchRequest({url:'/services/'+id, method:'DELETE'});
+    return fetchRequest({url:'/services/delete/'+id, method:'DELETE'});
 }
 
 export const servicesSave = (obj)=>{
