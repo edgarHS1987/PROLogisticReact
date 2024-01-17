@@ -30,6 +30,13 @@ export const zonesConfiguring = (obj)=>{
 }
 
 /**
+ * Obtiene las zonas y los drivers para asignar
+ */
+export const zonesDrivers = (clients_id)=>{
+    return fetchRequest({url:'/zones/drivers/'+clients_id});
+}
+
+/**
  * Verifica si ya existe la configuracion de zonas
  * @param {*} clients_id 
  */

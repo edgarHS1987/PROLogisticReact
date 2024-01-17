@@ -9,19 +9,22 @@ import { GrMap } from "react-icons/gr";
 import Button from "../components/Button";
 import Toast from "../components/Toast";
 
-import { zonesAssignDriver, zonesConfigured, zonesUnsignedDrivers } from "../services/zones";
+import { zonesConfigured, zonesUnsignedDrivers } from "../services/zones";
 import { servicesAssignToDriver, servicesTotalUnsigned } from "../services/services";
-import { decript, swalAction } from "../libs/functions";
+import { decript } from "../libs/functions";
 import ModalConfigureZones from "./modals/ConfigureZones";
+import ModalAssignZonesDrivers from "./modals/AssignZonesDrivers";
 
 const Home = ({loader})=>{
 	const modalZones = useRef();
+	const modalAssignZone = useRef();
 
 	const navigate = useNavigate();
 
 	const [driverUnsignedZone, setDriverUnsignedZone] = useState([]);
 	const [serviceUnsigned, setServiceUnsigned] = useState(0);
 	const [zones, setZones] = useState([]);
+	const [isTodayZone, setIsTodayZone] = useState(false);
 
 	const onLoad = ()=>{		
 		getDriversUnsigned();
@@ -33,10 +36,11 @@ const Home = ({loader})=>{
 
 		let response = await zonesConfigured(clients_id);
 		if(response){
-			if(response.length === 0){
+			if(response.zones.length === 0){
 				modalZones.current.handleShow(drivers);
 			}else{
-				setZones(response);
+				setZones(response.zones);
+				setIsTodayZone(response.today);
 			}
 		}
 	}
@@ -46,40 +50,14 @@ const Home = ({loader})=>{
 		if(response !== undefined){
 			setDriverUnsignedZone(response);
 
-			if(response.length > 0){
-				getZones(response.length);
-			}
+			
+			getZones(response.length);
+			
 		}
 	}
 
-	const onAssignZoneToDriver = async ()=>{
-		await loader.current.handleShow('Asignando...');
-		let response = await zonesAssignDriver(driverUnsignedZone);
-		if(response){
-			if(response.error){
-				swalAction({
-					title:'Alerta',
-					text:response.error,
-					icon:'warning',
-					textConfirm:'Configurar zonas',
-					fn:()=>{
-						navigate('/services/zones/list');
-					}
-				})
-			}else{
-				getDriversUnsigned();
-
-				Toast.fire({
-					title:'Correcto',
-					text:response.message,
-					icon:'success',
-					timer:4000
-				});
-
-			}
-		}
-
-		await loader.current.handleClose();
+	const onAssignZoneToDriver = async ()=>{		
+		modalAssignZone.current.handleShow();
 	}
 
 	const getServicesUnsigned = async ()=>{
@@ -133,7 +111,7 @@ const Home = ({loader})=>{
 								appearance="ghost"
 								classes="full-width"
 								action={()=>modalZones.current.handleShow(driverUnsignedZone.length)}
-								disabled={zones.length > 0}								
+								disabled={zones.length > 0 && isTodayZone}								
 							/>
 						</Col>
 					</Col>
@@ -200,6 +178,12 @@ const Home = ({loader})=>{
 				loader={loader}
 				getData={getZones}
 				ref={modalZones}
+			/>
+
+			<ModalAssignZonesDrivers 
+				loader={loader}
+				getData={getDriversUnsigned}
+				ref={modalAssignZone}
 			/>
 		</>
 	)
