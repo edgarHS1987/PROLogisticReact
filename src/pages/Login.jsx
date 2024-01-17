@@ -57,7 +57,7 @@ const Login = ({loader})=>{
     return(
         <Grid fluid>
             <FlexboxGrid justify="center" align="middle"  className="full-height">                
-                <Col xs={22} md={16} lg={12}>
+                <Col xs={22} md={16} lg={12} xl={8}>
                     <Panel shaded>
                         <Grid fluid>
                             <Col xs={24} className="text-center">
@@ -65,7 +65,13 @@ const Login = ({loader})=>{
                             </Col>
                         </Grid>
                         <Grid fluid>
-                            <Col xs={24} mdOffset={3} md={18} lgOffset={5} lg={14} >
+                            <Col xs={24} mdOffset={3} md={18} lgOffset={4} lg={16} >
+                                <div className="flex justify-content-center">
+                                    <div className="col-10 col-md-8 col-lg-10 p-3">
+                                        <img src="./logo.webp" className="img-fluid" />
+                                    </div>
+                                    
+                                </div>
                                 <div>
                                     <span>Usuario</span>
                                     <input className="form-control form-control-sm border-rounded" value={user} onChange={(e)=>setUser(e.target.value)} />

@@ -48,8 +48,6 @@ const Layout = ({loader, reset})=>{
 			{title:'Dias Activos Drivers', show:getPermission('admin_permissions'), active:false, url:'/reports/drivers/workingDays'},
             {title:'Servicios Asginados', show:getPermission('admin_permissions'), active:false, url:'/reports/services/assigned'},
             {title:'Estatus Servicios', show:getPermission('admin_permissions'), active:false, url:'/reports/services/status'},
-            {title:'Usuarios', show:getPermission('admin_users'), active:false, url:'/admin/users/list'},
-            {title:'Configuración', show:getPermission('admin_users'), active:false, url:'/admin/configuration/list'},
 		]},
         {title:'Admin', show:getPermission('admin_menu'), active:false, open:false, icon:<GearCircleIcon />, submenu:[
 			{title:'Permisos', show:getPermission('admin_permissions'), active:false, url:'/admin/permissions/list'},
