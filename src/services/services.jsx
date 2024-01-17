@@ -18,6 +18,23 @@ export const servicesDelete = (id)=>{
     return fetchRequest({url:'/services/delete/'+id, method:'DELETE'});
 }
 
+/**
+ * Obtiene detalles del servicio
+ * @param {*} id identificador de servicio
+ */
+export const servicesDetails = (id)=>{
+    return fetchRequest({url:'/services/details/'+id});
+}
+
+/**
+ * Listado de servicios por cliente
+ * @param {*} id identificador de cliente
+ */
+export const servicesList = (id, date)=>{
+    return fetchRequest({url:'/services/list/'+id+'/'+date});
+}
+
+
 export const servicesSave = (obj)=>{
     return fetchRequest({url:'/services', method:'POST', body:obj});
 }
