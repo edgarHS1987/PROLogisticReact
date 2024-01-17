@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Col, Grid } from "rsuite";
 import { useNavigate } from "react-router-dom";
 
@@ -14,10 +14,13 @@ import { servicesAssignToDriver, servicesTotalUnsigned } from "../services/servi
 import { decript } from "../libs/functions";
 import ModalConfigureZones from "./modals/ConfigureZones";
 import ModalAssignZonesDrivers from "./modals/AssignZonesDrivers";
+import SystemContext from "../context/SystemContext";
 
 const Home = ({loader})=>{
 	const modalZones = useRef();
 	const modalAssignZone = useRef();
+
+	const {getPermission} = useContext(SystemContext);
 
 	const navigate = useNavigate();
 
@@ -49,10 +52,8 @@ const Home = ({loader})=>{
 		let response = await zonesUnsignedDrivers();
 		if(response !== undefined){
 			setDriverUnsignedZone(response);
-
 			
-			getZones(response.length);
-			
+			getZones(response.length);			
 		}
 	}
 
@@ -106,13 +107,16 @@ const Home = ({loader})=>{
 							</Col>
 						</Col>
 						<Col xs={24} className="pt-2">
-							<Button 
-								title="Configurar zonas" 
-								appearance="ghost"
-								classes="full-width"
-								action={()=>modalZones.current.handleShow(driverUnsignedZone.length)}
-								disabled={zones.length > 0 && isTodayZone}								
-							/>
+							{getPermission('services_zones_configure') && (
+								<Button 
+									title="Configurar zonas" 
+									appearance="ghost"
+									classes="full-width"
+									action={()=>modalZones.current.handleShow(driverUnsignedZone.length)}
+									disabled={zones.length > 0 && isTodayZone}								
+								/>
+							)}
+							
 						</Col>
 					</Col>
 
@@ -128,13 +132,16 @@ const Home = ({loader})=>{
 								</Col>
 							</Col>
 							<Col xs={24} className="pt-2">
-								<Button 
-									title="Asignar a zona" 
-									appearance="ghost"
-									classes="full-width"
-									action={()=>onAssignZoneToDriver()}
-									disabled={zones.length === 0}
-								/>
+								{getPermission('services_zones_assign_driver') && (
+									<Button 
+										title="Asignar a zona" 
+										appearance="ghost"
+										classes="full-width"
+										action={()=>onAssignZoneToDriver()}
+										disabled={zones.length === 0}
+									/>
+								)}
+								
 							</Col>
 						</Col>
 					)}
@@ -152,20 +159,25 @@ const Home = ({loader})=>{
 							</Col>
 							<Col xs={24} className="pt-2">
 								<Col xs={24} md={12}>
-									<Button 
-										title="Asignar a driver" 
-										appearance="ghost"
-										classes="full-width"
-										action={()=>onAssignService()}
-									/>
+									{getPermission('services_assign_driver') && (
+										<Button 
+											title="Asignar a driver" 
+											appearance="ghost"
+											classes="full-width"
+											action={()=>onAssignService()}
+										/>
+									)}
+									
 								</Col>
 								<Col xs={24} md={12}>
-									<Button 
-										title="Ir a registro" 
-										appearance="ghost"
-										classes="full-width"
-										action={()=>navigate('/services/new')}
-									/>
+									{getPermission('services_create') && (
+										<Button 
+											title="Ir a registro" 
+											appearance="ghost"
+											classes="full-width"
+											action={()=>navigate('/services/new')}
+										/>
+									)}									
 								</Col>
 							</Col>
 						</Col>

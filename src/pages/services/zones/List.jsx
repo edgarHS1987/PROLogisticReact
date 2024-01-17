@@ -3,13 +3,15 @@ import { Col, Divider, Grid, Panel, PanelGroup, Row } from "rsuite"
 import Title from "../../../components/Title"
 import Button from "../../../components/Button";
 import ModalConfigureZones from "../../modals/ConfigureZones";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {  zonesByClient } from "../../../services/zones";
 import { clientsList } from "../../../services/clients";
 import Table from "../../../components/Table";
+import SystemContext from "../../../context/SystemContext";
 
 
 const ZonesList = ({loader})=>{
+    const {getPermission} = useContext(SystemContext);
     const configure = useRef();
     const tableRef = useRef([]);
 
@@ -107,12 +109,15 @@ const ZonesList = ({loader})=>{
             <Grid fluid>
                 <Row>
                     <Col xs={24} className="text-end">
-                        <Button 
-                            title="Configurar"
-                            appearance="ghost"
-                            classes="btn-new"
-                            action={()=>openConfiguration()}
-                        />
+                        {getPermission('services_zones_configure') && (
+                            <Button 
+                                title="Configurar"
+                                appearance="ghost"
+                                classes="btn-new"
+                                action={()=>openConfiguration()}
+                            />
+                        )}
+                        
                     </Col>
                     <Col xs={24}>
                         <div className='p-4 shadow rounded form-content'>

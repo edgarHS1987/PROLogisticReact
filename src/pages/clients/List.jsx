@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { ButtonToolbar, Col, Divider, Grid } from "rsuite"
 import { useNavigate } from "react-router-dom";
 
@@ -7,10 +7,12 @@ import Button from "../../components/Button";
 import Table from "../../components/Table";
 import { clients } from "../../services/clients";
 import ButtonList from "../../components/ButtonList";
+import SystemContext from "../../context/SystemContext";
 
 const ClientsList = ({loader})=>{
     const tableRef = useRef();
     const navigate = useNavigate();
+    const {getPermission} = useContext(SystemContext);
 
     const [tableConfig, setTableConfig] = useState({columns:[
         {
@@ -35,12 +37,15 @@ const ClientsList = ({loader})=>{
                 return(
                     <Fragment>
                         <ButtonToolbar>
+                            {getPermission('clients_update') && (
                                 <ButtonList
                                     controlId={'edit'}
                                     title="Editar"
                                     type="edit"
                                     //action={()=>onOpenEdit(row.id)}
                                 />
+                            )}
+                            {getPermission('clients_delete') && (
                                 <ButtonList 
                                     controlId={'delete'}
                                     title="Eliminar"
@@ -48,7 +53,7 @@ const ClientsList = ({loader})=>{
                                     color="red"
                                     //action={()=>onDelete(row.id)}
                                 />
-                            
+                            )}                                    
                         </ButtonToolbar>
                     </Fragment>
                 )
@@ -111,12 +116,14 @@ const ClientsList = ({loader})=>{
             <Divider style={{marginTop:0}} />
             <Grid fluid>
                 <Col xs={24} className="container-buttons">
+                    {getPermission('clients_create') && (
                         <Button 
                             title="Nuevo"
                             appearance="ghost"
                             classes="btn-new"
                             action={()=>navigate('/cliets/new')}
-                        />                    
+                        />
+                    )}                        
                 </Col>
                <Col xs={24}>
                     <div className='p-4 shadow rounded form-content'>

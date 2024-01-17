@@ -10,14 +10,14 @@ const ServicesTable = forwardRef(({
 }, ref)=>{
     return(
         <Col xs={24}>
-            <div className='p-4 shadow rounded form-content'>
-                <Table
-                    loader={loader}
-                    columns={tableConfig.columns}
-                    data={tableList}
-                    ref={tableRef}
-                />
-            </div>
+            
+            <Table
+                loader={loader}
+                columns={tableConfig.columns}
+                data={tableList}
+                ref={tableRef}
+            />
+        
         </Col>
     )
 })

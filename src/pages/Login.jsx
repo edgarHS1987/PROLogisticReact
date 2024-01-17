@@ -42,7 +42,8 @@ const Login = ({loader})=>{
                     encript('clients_id', JSON.stringify(clients[0].value));
                 }
 
-                navigate('/');
+                //navigate('/');
+                window.location.href = '/';
                 
             }else{
                 Toast.fire({icon:'error', title:'Error', text:'Contraseña y/o usuario incorrecto'});

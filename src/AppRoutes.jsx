@@ -62,10 +62,17 @@ const AppRoutes = (props)=>{
 				<Route element={<Layout {...props} />}>
 					<Route path={'/'} exact element={<Home {...props} />} />
 
-					<Route path={'/drivers/list'} exact element={<DriversList {...props} />} />
-					<Route path={'/drivers/new'} exact element={<NewDriver {...props} />} />
-					<Route path={'/drivers/edit/:id'} exact element={<NewDriver {...props} />} />
-					<Route path={'/reports/drivers/workingDays'} exact element={<WorkingDays {...props} />} />
+					{/** DRIVERS */}
+					{getPermission('drivers') && (
+						<Route path={'/drivers/list'} exact element={<DriversList {...props} />} />
+					)}
+					{getPermission('drivers_create') && (
+						<Route path={'/drivers/new'} exact element={<NewDriver {...props} />} />
+					)}
+					{getPermission('drivers_update') && (
+						<Route path={'/drivers/edit/:id'} exact element={<NewDriver {...props} />} />
+					)}					
+					
 
 					{/** PERMISOS */}
 					{getPermission('admin_permissions') && (
@@ -84,29 +91,43 @@ const AppRoutes = (props)=>{
 					)}
 					
 					{/** USUARIOS */}
-					{getPermission('admin_roles_update') && (
+					{getPermission('admin_users') && (
 						<Route path={'/admin/users/list'} exact element={<UsersList {...props} />} />
 					)}
-					{getPermission('admin_roles_update') && (
+					{getPermission('admin_users_create') && (
 						<Route path={'/admin/users/new'} exact element={<UsersForm {...props} />} />
 					)}
-					{getPermission('admin_roles_update') && (
+					{getPermission('admin_users_update') && (
 						<Route path={'/admin/users/edit/:id'} exact element={<UsersForm {...props} />} />
 					)}
 
 					{/** CLIENTES */}
-					<Route path={'/clients/list'} exact element={<ClientsList {...props} />} />
-
+					{getPermission('clients') && (
+						<Route path={'/clients/list'} exact element={<ClientsList {...props} />} />
+					)}
+					
 					{/** ZONAS */}
-					<Route path={'/services/zones/list'} exact element={<ZonesList {...props} />} />
+					{getPermission('services_zones') && (
+						<Route path={'/services/zones/list'} exact element={<ZonesList {...props} />} />
+					)}					
 
 					{/** ESTADOS */}
-					<Route path={'/services/states/list'} exact element={<StatesList {...props} />} />
-
+					{getPermission('services_states') && (
+						<Route path={'/services/states/list'} exact element={<StatesList {...props} />} />
+					)}
 
 					{/** SERVICIOS */}
-					<Route path='/services/list' exact element={<ServicesList {...props} />} />
-					<Route path='/services/new' exact element={<ServicesForm {...props} />} />
+					{getPermission('services') && (
+						<Route path='/services/list' exact element={<ServicesList {...props} />} />
+					)}
+					{getPermission('services_create') && (
+						<Route path='/services/new' exact element={<ServicesForm {...props} />} />
+					)}					
+
+					{/** REPORTS */}
+					{getPermission('reports') && (
+						<Route path={'/reports/drivers/workingDays'} exact element={<WorkingDays {...props} />} />
+					)}
 
 					<Route path={'/*'} element={<NotFound />} />
 				</Route>

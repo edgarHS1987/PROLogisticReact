@@ -58,7 +58,7 @@ const DriversList = ({loader, reset})=>{
                     <Fragment>
                         <ButtonToolbar>
                             
-                            {getPermission('admin_users_update') && (
+                            {getPermission('drivers_update') && (
                                 <ButtonList 
                                     controlId={'edit'}
                                     title="Editar"
@@ -67,7 +67,7 @@ const DriversList = ({loader, reset})=>{
                                 />
                             )}
 
-                            {getPermission('admin_users_delete') && (
+                            {getPermission('drivers_delete') && (
                                 <ButtonList 
                                     controlId={'delete'}
                                     title="Eliminar"
@@ -136,14 +136,6 @@ const DriversList = ({loader, reset})=>{
 
         await loader.current.handleClose();
 	}
-
-    /**
-     * abre modal de reseteo de contraseña
-     * @param {*} id identificador de registro
-     */
-    const onOpenReset = (id)=>{
-        reset.current.handleShow(id);
-    }
     
 
     /**
@@ -205,7 +197,7 @@ const DriversList = ({loader, reset})=>{
             <Divider style={{marginTop:0}} />
             <Grid fluid>
                 <Col xs={24} className="container-buttons">
-                    {getPermission('admin_users_create') && (
+                    {getPermission('drivers_create') && (
                         <Button 
                             title="Nuevo"
                             appearance="ghost"

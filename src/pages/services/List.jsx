@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ButtonToolbar, Col, Divider, Grid, Message } from "rsuite";
 
@@ -14,8 +14,10 @@ import moment from "moment";
 import ButtonList from "../../components/ButtonList";
 import Table from "../../components/Table";
 import ModalDetailServices from "../modals/DetailServices";
+import SystemContext from "../../context/SystemContext";
 
 const ServicesList = ({loader})=>{
+    const {getPermission} = useContext(SystemContext);
     const unsignedModal = useRef();
     const detailsModal = useRef();
     const tableRef = useRef();
@@ -165,8 +167,7 @@ const ServicesList = ({loader})=>{
                 {totalServiceUnsigned > 0 && (
                     <Message style={{padding:5}} type="error">Servicios sin asignar: {totalServiceUnsigned}</Message>
                 )}
-                
-                
+                                
                 <Col xs={24} className="p-2 flex align-items-end">
                     <Col xs={4}>
                         <label>Fecha</label>
@@ -182,12 +183,14 @@ const ServicesList = ({loader})=>{
                         <Button title="Buscar" appearance="ghost" action={()=>getServices()} />
                     </Col>
                     <Col xs={2} xsOffset={18}>
-                        <Button 
-                            title="Nuevo"
-                            appearance="ghost"
-                            classes="btn-new"
-                            action={()=>navigate('/services/new')}
-                        />
+                        {getPermission('services_create') && (
+                            <Button 
+                                title="Nuevo"
+                                appearance="ghost"
+                                classes="btn-new"
+                                action={()=>navigate('/services/new')}
+                            />
+                        )}                        
                     </Col>
                 </Col>
                     

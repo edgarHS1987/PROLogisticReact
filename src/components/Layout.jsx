@@ -37,17 +37,17 @@ const Layout = ({loader, reset})=>{
 		 *
 		 * */
 		{title:'Dashboard', submenu:[], show:true, open:false, active:true, url:'/', icon:<DashboardIcon />},        
-        {title:'Clientes', submenu:[], show:true, open:false, active:true, url:'/clients/list', icon:<FaUser />},
-        {title:'Servicios', show:true, active:false, open:false, icon:<FaMapLocationDot className='icon-menu' />, submenu:[
-            {title:'Estados', show:true, active:false, url:'/services/states/list'},
-			{title:'Zonas', show:true, active:false, url:'/services/zones/list'},
-            {title:'Servicios', show:true, active:false, url:'/services/list'}
+        {title:'Clientes', submenu:[], show:getPermission('clients'), open:false, active:true, url:'/clients/list', icon:<FaUser />},
+        {title:'Servicios', show:getPermission('services_menu'), active:false, open:false, icon:<FaMapLocationDot className='icon-menu' />, submenu:[
+            {title:'Estados', show:getPermission('services_states'), active:false, url:'/services/states/list'},
+			{title:'Zonas', show:getPermission('services_zones'), active:false, url:'/services/zones/list'},
+            {title:'Servicios', show:getPermission('services'), active:false, url:'/services/list'}
 		]},		
-        {title:'Drivers', submenu:[], show:true, open:false, active:true, url:'/drivers/list', icon:<MemberIcon />},
-        {title:'Reportes', show:getPermission('admin_menu'), active:false, open:false, icon:<DetailIcon />, submenu:[
-			{title:'Dias Activos Drivers', show:getPermission('admin_permissions'), active:false, url:'/reports/drivers/workingDays'},
-            {title:'Servicios Asginados', show:getPermission('admin_permissions'), active:false, url:'/reports/services/assigned'},
-            {title:'Estatus Servicios', show:getPermission('admin_permissions'), active:false, url:'/reports/services/status'},
+        {title:'Drivers', submenu:[], show:getPermission('drivers'), open:false, active:true, url:'/drivers/list', icon:<MemberIcon />},
+        {title:'Reportes', show:getPermission('reports'), active:false, open:false, icon:<DetailIcon />, submenu:[
+			{title:'Dias Activos Drivers', show:getPermission('reports'), active:false, url:'/reports/drivers/workingDays'},
+            {title:'Servicios Asginados', show:getPermission('reports'), active:false, url:'/reports/services/assigned'},
+            {title:'Estatus Servicios', show:getPermission('reports'), active:false, url:'/reports/services/status'},
 		]},
         {title:'Admin', show:getPermission('admin_menu'), active:false, open:false, icon:<GearCircleIcon />, submenu:[
 			{title:'Permisos', show:getPermission('admin_permissions'), active:false, url:'/admin/permissions/list'},
