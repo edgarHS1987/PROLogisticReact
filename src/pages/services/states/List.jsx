@@ -5,7 +5,7 @@ import Title from "../../../components/Title"
 import Button from "../../../components/Button";
 import Table from "../../../components/Table";
 import ModalStates from "../../modals/States";
-import MunicipalitiesModal from "../../modals/municipalities";
+import MunicipalitiesModal from "../../modals/Municipalities";
 import { statesDetails } from "../../../services/states";
 import { municipalitiesShow } from "../../../services/municipalities";
 import ButtonList from "../../../components/ButtonList";
