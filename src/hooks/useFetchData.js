@@ -11,7 +11,6 @@ export const useFetchData = ( reportType ) =>{
         const response = await driverGetDocsVisor( tipo,idDriver );
         const resultados = response[0].data.map( (doc) => {
             return {
-                // id: doc.name_file,
                 label: doc.name_file,
                 value: doc.name_file,
             };
@@ -30,7 +29,7 @@ export const useFetchData = ( reportType ) =>{
 
     useEffect( () => {
 
-        if ( open == true ) {
+        if ( reportType ) {
             getDocs();  
             
             return () => {
@@ -39,7 +38,7 @@ export const useFetchData = ( reportType ) =>{
             }; 
         }
         
-    },[open])
+    },[reportType])
 
 
     return{

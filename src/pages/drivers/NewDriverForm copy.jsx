@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Form, Button,Row, Col } from 'rsuite';
+import { Form, Button } from 'rsuite';
 import {useForm} from '../../hooks/useForm';
 import { Schema } from 'rsuite'
 import {driverSave,driversId} from '../../services/drivers'
@@ -169,80 +169,69 @@ export const NewDriverForm = ({handleId,idDriver}) => {
 
   return (
     <>
-      <Form >
-      <Row className="show-grid">
-        <Col xs={24}>
-          <Form layout="inline" className={"personales"}>
-
-            <Form.Group controlId="namesDriver">
-              <Form.ControlLabel>Nombre</Form.ControlLabel>
-              <Form.Control 
-                name = "nameDriver"
-                // style={{ width: 160 }} 
-                value = {nameDriver}
-                onChange={handleChange}
-                size="sm"
-                required
-                />
-              <Form.HelpText tooltip>Obligatorio</Form.HelpText>
-            </Form.Group>
-
-            <Form.Group controlId="lname1">
-              <Form.ControlLabel>Apellido Paterno</Form.ControlLabel>
-              <Form.Control 
-                name="last1" 
-                // style={{ width: 150 }}
-                value = {last1}
-                onChange={handleChange}
-                size="sm"
-                required
-              />
-              <Form.HelpText tooltip>Obligatorio</Form.HelpText>
-            </Form.Group>
-
-            <Form.Group controlId="lname2">
-              <Form.ControlLabel>Apellido Materno</Form.ControlLabel>
-              <Form.Control 
-                name="last2" 
-                // style={{ width: 150 }} 
-                value = {last2}
-                onChange={handleChange}
-                size="sm"
-              />
-            </Form.Group>
-
-            <Form.Group controlId="MainPhone">
-              <Form.ControlLabel>Telefono</Form.ControlLabel>
-              <Form.Control 
-                name="phone1" 
-                // style={{ width: 155 }}
-                value = {phone1}
-                onChange={handleChange}
-                size="sm"
-                required
-              />
-              <Form.HelpText tooltip>Obligatorio</Form.HelpText>
-            </Form.Group>
-
-            <Form.Group controlId="AditionalPhone">
-              <Form.ControlLabel>Telefono Adicional</Form.ControlLabel>
-              <Form.Control 
-                name="phone2" 
-                // style={{ width: 150 }} 
-                value = {phone2}
-                onChange={handleChange}
-                size="sm"
-              />
-            </Form.Group>
-
-          </Form>
-        </Col>
-
-      </Row>
-
       <Form layout="inline" className={"personales"}>
+      <Form.Group controlId="namesDriver">
+        <Form.ControlLabel>Nombre</Form.ControlLabel>
+        <Form.Control 
+          name = "nameDriver"
+          style={{ width: 160 }} 
+          value = {nameDriver}
+          onChange={handleChange}
+          size="sm"
+          required
+          />
+        <Form.HelpText tooltip>Obligatorio</Form.HelpText>
+      </Form.Group>
 
-      
+      <Form.Group controlId="lname1">
+        <Form.ControlLabel>Apellido Paterno</Form.ControlLabel>
+        <Form.Control 
+          name="last1" 
+          style={{ width: 150 }}
+          value = {last1}
+          onChange={handleChange}
+          size="sm"
+          required
+        />
+        <Form.HelpText tooltip>Obligatorio</Form.HelpText>
+      </Form.Group>
+
+      <Form.Group controlId="lname2">
+        <Form.ControlLabel>Apellido Materno</Form.ControlLabel>
+        <Form.Control 
+          name="last2" 
+          style={{ width: 150 }} 
+          value = {last2}
+          onChange={handleChange}
+          size="sm"
+        />
+      </Form.Group>
+
+      <br />
+
+      <Form.Group controlId="MainPhone">
+        <Form.ControlLabel>Telefono</Form.ControlLabel>
+        <Form.Control 
+          name="phone1" 
+          style={{ width: 155 }}
+          value = {phone1}
+          onChange={handleChange}
+          size="sm"
+          required
+        />
+        <Form.HelpText tooltip>Obligatorio</Form.HelpText>
+      </Form.Group>
+
+      <Form.Group controlId="AditionalPhone">
+        <Form.ControlLabel>Telefono Adicional</Form.ControlLabel>
+        <Form.Control 
+          name="phone2" 
+          style={{ width: 150 }} 
+          value = {phone2}
+          onChange={handleChange}
+          size="sm"
+        />
+      </Form.Group>
 
       <Form.Group controlId="emailControl">
         <Form.ControlLabel>Email</Form.ControlLabel>
@@ -255,7 +244,7 @@ export const NewDriverForm = ({handleId,idDriver}) => {
           required
         />
       </Form.Group>
-      </Form>
+
       <br />
 
       <Button color="blue" appearance="primary" type="submit" onClick={handleSubmit}> {textButton} </Button>

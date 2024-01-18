@@ -9,11 +9,11 @@ import Toast from '../../components/Toast';
 
 import SystemContext from "../../context/SystemContext";
 
-import {  workingDays } from "../../services/reports";
+import {  asignedServices } from "../../services/reports";
 import { downloadExcel } from "react-export-table-to-excel";
 import ExportIcon from '@rsuite/icons/Export';
 
-export const WorkingDays = ( {loader, reset} ) => {
+export const AssignedServices = ( {loader, reset} ) => {
 
   const tableRef = useRef(null);
   const {getPermission} = useContext(SystemContext);
@@ -22,22 +22,46 @@ export const WorkingDays = ( {loader, reset} ) => {
 
 	const [tableConfig, setTableConfig] = useState({columns:[
         {
-            label: 'Nombre Driver',
+            label: '#Servicio',
             selector: row => row.col1,
             show:true,
-            width:'40%'
+            width:'10%'
         },
         {
-            label: 'Fecha',
+            label: 'Fecha Alta Servicio',
             selector: row => row.col2,
             show:true,
-            width:'30%'
+            width:'10%'
         },
         {
-            label: 'Estatus',
+            label: 'Guia',
             selector: row => row.col3,
             show:true,
-            width:'30%'
+            width:'10%'
+        },
+        {
+          label: 'Codigo Postal',
+          selector: row => row.col4,
+          show:true,
+          width:'10%'
+        },
+        {
+          label: 'Driver',
+          selector: row => row.col5,
+          show:true,
+          width:'20%'
+        },
+        {
+          label: 'Fecha Asignacion',
+          selector: row => row.col6,
+          show:true,
+          width:'10%'
+        },
+        {
+          label: 'Estatus',
+          selector: row => row.col7,
+          show:true,
+          width:'10%'
         },
         
     ]})
@@ -74,26 +98,29 @@ export const WorkingDays = ( {loader, reset} ) => {
 	const getData = async ()=>{
     await loader.current.handleShow('Cargando...');
 
-    let finicio = new Date( fechaInicio );
-    //let fini = finicio.toISOString().split('T')[0];   
+    let finicio = new Date( fechaInicio );  
     let fini = finicio.toLocaleDateString( "en-CA" );
     fini = fini.replace( /\//g, "-" );
 
     let ffinal = new Date( fechaFinal );
-    //let ffin = ffinal.toISOString().split('T')[0]; 
     let ffin = ffinal.toLocaleDateString( "en-CA" );
     ffin = ffin.replace( /\//g, "-" );
       
-		let response = await workingDays( fini,ffin );
+		let response = await asignedServices( fini,ffin );
     
 		if( response ){
 			let data = response.data.map((res)=>{ 
     
 				//configuracion de cada fila conformer la confifuracion de columnas 
 				let item = {
-					col1: res.names+' '+res.lastname1+(res.lastname2 !== null ? ' '+res.lastname2 : ''),
-					col2: res.date,
-          col3: 'Activo',
+          col1: res.id,
+          col2: res.fechaAltaServicio+' '+res.horaAltaServicio,
+          col3: res.guia,
+          col4: res.zip,
+					col5: res.names+' '+res.lastname1+(res.lastname2 !== null ? ' '+res.lastname2 : ''),
+					col6: res.fechaAsignacion+' '+res.horaAsignacion,
+          col7: res.status,
+          
 				};
 
 				return item;
@@ -114,14 +141,15 @@ export const WorkingDays = ( {loader, reset} ) => {
 
   function handleDownloadExcel() {
 
-    const header = ["Nombres", "Fecha" , "Estatus"];
+    const header = ["#Servicio", "Fecha Alta Servicio" , "Guia", 
+        "Cogigo Postal", "Driver", "Fecha Asignacion"];
 
     if ( tableList.length == 0 ) {
       Toast.fire({icon:'error', title:'Error', text:'No Hay Datos para Exportar', timer:4500})
     }else{
       downloadExcel({
-        fileName: "Reporte Dias Trabajados",
-        sheet: "Hoja1",
+        fileName: "excel",
+        sheet: "react-export-table-to-excel",
         tablePayload: {
           header,
           // accept two different data structures
@@ -134,12 +162,10 @@ export const WorkingDays = ( {loader, reset} ) => {
 
 	useEffect(()=>{
     getTableConfig();
-		//onLoad();
 	},[fechaInicio]);
 
   useEffect(()=>{
     getTableConfig();
-		//onLoad();
 	},[fechaFinal]);
 
   useEffect(()=>{
@@ -151,7 +177,7 @@ export const WorkingDays = ( {loader, reset} ) => {
       <Grid fluid className='content'>
             <Grid fluid>
                 <Col xs={24} className="mb-2">
-                    <Title screen="Reportes" action="Dias Activos por Driver" />
+                    <Title screen="Reportes" action="Servicios Asignados" />
                 </Col>
             </Grid>            
             <Divider style={{marginTop:0}} />
@@ -218,4 +244,4 @@ export const WorkingDays = ( {loader, reset} ) => {
   )
 }
 
-export default WorkingDays;
+export default AssignedServices;

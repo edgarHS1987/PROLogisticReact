@@ -28,6 +28,7 @@ import StatesList from './pages/services/states/List';
 
 import ServicesList from './pages/services/List';
 import ServicesForm from './pages/services/Form';
+import AssignedServices from './pages/reports/AssignedServices';
 
 
 //verifica si se ha iniciado sesion
@@ -69,6 +70,15 @@ const AppRoutes = (props)=>{
 					<Route path={'/drivers/edit/:id'} exact element={<NewDriver {...props} />} />
 
 					<Route path={'/reports/drivers/workingDays'} exact element={<WorkingDays {...props} />} />
+					<Route path={'/reports/services/assigned'} exact element={<AssignedServices {...props} />} />
+
+					{/* <Route path={'/drivers'} exact element={<DriversList {...props} />} />
+
+					<Route path={'/drivers/new'} exact element={<NewDriver {...props} />} />
+
+					<Route path={'/drivers/edit/:id'} exact element={<NewDriver {...props} />} />
+
+					<Route path={'/reports/drivers/workingDays'} exact element={<WorkingDays {...props} />} />
 
 					<Route path={'/drivers'} exact element={<DriversList {...props} />} />
 
@@ -77,14 +87,7 @@ const AppRoutes = (props)=>{
 					<Route path={'/drivers/edit/:id'} exact element={<NewDriver {...props} />} />
 
 					<Route path={'/reports/drivers/workingDays'} exact element={<WorkingDays {...props} />} />
-
-					<Route path={'/drivers'} exact element={<DriversList {...props} />} />
-
-					<Route path={'/drivers/new'} exact element={<NewDriver {...props} />} />
-
-					<Route path={'/drivers/edit/:id'} exact element={<NewDriver {...props} />} />
-
-					<Route path={'/reports/drivers/workingDays'} exact element={<WorkingDays {...props} />} />
+					 */}
 
 
 					{/** PERMISOS */}
