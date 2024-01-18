@@ -7,15 +7,15 @@ import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
 import 'datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css';
 import $ from "jquery";
 import jszip from 'jszip';
-import pdfMake from 'pdfmake';
+//import pdfMake from 'pdfmake';
 import DataTable from 'datatables.net-bs5';
 import 'datatables.net-buttons-bs5';
 import 'datatables.net-buttons/js/buttons.html5.mjs';
 import DateTime from 'datatables.net-datetime';
 import 'datatables.net-responsive-bs5';
 
-import pdfFonts from "pdfmake/build/vfs_fonts";
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+//import pdfFonts from "pdfmake/build/vfs_fonts";
+//pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const Table = forwardRef(({
 	columns,
