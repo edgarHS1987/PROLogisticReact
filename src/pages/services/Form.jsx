@@ -18,7 +18,7 @@ import sound from '../../assets/error.mp3';
 import { addErrorToSelectedField, decript, getDevice, isValidForm, swalAction } from "../../libs/functions";
 import { clientsList } from "../../services/clients";
 import { warehousesShow } from "../../services/warehouses";
-import { servicesAssignToDriver, servicesDelete, servicesSave, servicesUnsignedByClient } from "../../services/services";
+import { gMapsByAddress, servicesAssignToDriver, servicesDelete, servicesSave, servicesUnsignedByClient, servicesUpdateLocation, servicesWithoutLocation } from "../../services/services";
 import ServicesTable from "./ServicesTable";
 import ModalServices from "../modals/Services";
 
@@ -367,15 +367,68 @@ const ServicesForm = ({loader})=>{
         if(response){
             if(response.error){
                 Toast.fire('Error', response.error, 'error');
-            }else{                
+            }else{
                 modalService.current.handleClose();
-                Toast.fire('Correcto', response.message, 'success');
-                navigate('/services/list');
-
+                
+                getLocationServices();
             }
+        }else{
+            await loader.current.handleClose();
         }
-        await loader.current.handleClose();
+        
     }
+
+    const getLocationServices = async ()=>{
+		let clients_id = decript('clients_id');
+		let response = await servicesWithoutLocation(clients_id);
+		if(response){
+			let platform = '';
+			
+			await response.platforms.forEach((p)=>{
+				if(p.platform === 'gmaps'){
+					if(p.total <= 10000){
+						platform = 'gmaps';
+					}
+				}
+			})
+
+			let services = await Promise.all(
+				response.services.map(async (res)=>{
+					let address = res.address+', '+res.zip_code+', '+res.state;
+
+					address = address.replaceAll(' ', '%20');
+
+					if(platform === 'gmaps'){
+						let request = await gMapsByAddress(address);
+						if(request){
+							request.results.forEach((result, i)=>{
+								if(i === 0){
+									res.latitude = result.geometry.location.lat;
+									res.longitude = result.geometry.location.lng;
+									res.full_address = result.formatted_address;
+								}
+							})
+						}
+					}
+
+					return res;
+				})
+			);
+
+			let obj = {
+				services: services,
+				platform: platform
+			};
+
+			let request = await servicesUpdateLocation(obj);
+			if(request){
+				Toast.fire('Correcto', response.message, 'success');
+                navigate('/services/list');
+			}
+		}
+
+		await loader.current.handleClose();
+	}
     
     useEffect(()=>{
         onLoad();                

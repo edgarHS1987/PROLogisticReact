@@ -14,8 +14,8 @@ import 'datatables.net-buttons/js/buttons.html5.mjs';
 import DateTime from 'datatables.net-datetime';
 import 'datatables.net-responsive-bs5';
 
-import pdfFonts from "pdfmake/build/vfs_fonts";
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+//import pdfFonts from "pdfmake/build/vfs_fonts";
+//pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const Table = forwardRef(({
 	columns,

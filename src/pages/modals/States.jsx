@@ -27,8 +27,7 @@ const ModalStates = forwardRef(({loader, getData}, ref)=>{
             //reader.readAsText(file, 'UTF-8');
             reader.readAsText(file, 'ISO-8859-1');
             reader.onload = async (e)=>{
-                const content = e.target.result;
-                console.log(content)
+                const content = e.target.result;                
                 const lines = content.split('\n');
 
                 let states = [];
@@ -37,43 +36,45 @@ const ModalStates = forwardRef(({loader, getData}, ref)=>{
                         let data = line.split('|');
 
                         if(data[0] !== ''){
-                            let indexState = states.findIndex(obj => obj.name === data[4]);
+                            if(data[4] === 'San Luis Potosí'){
+                                let indexState = states.findIndex(obj => obj.name === data[4]);
 
-                            if(indexState === -1){
-                                states.push({
-                                    name: data[4],
-                                    municipalities:[{
-                                        name: data[3],
-                                        zip_codes:[{
-                                            zip_code: data[0],
-                                            colonies:[{name:data[1], type:data[2]}]
-                                        }]
-                                    }]
-                                });
-                            }else{
-                                let indexMunicipality = states[indexState].municipalities.findIndex(obj => obj.name === data[3]);
-                                if(indexMunicipality === -1){
-                                    states[indexState].municipalities.push({
-                                        name: data[3],
-                                        zip_codes:[{
-                                            zip_code: data[0],
-                                            colonies:[{name:data[1], type:data[2]}]
+                                if(indexState === -1){
+                                    states.push({
+                                        name: data[4],
+                                        municipalities:[{
+                                            name: data[3],
+                                            zip_codes:[{
+                                                zip_code: data[0],
+                                                colonies:[{name:data[1], type:data[2]}]
+                                            }]
                                         }]
                                     });
                                 }else{
-                                    let indexZipCode = states[indexState].municipalities[indexMunicipality].zip_codes.findIndex(obj => obj.zip_code === data[0]);
-                                    if(indexZipCode === -1){
-                                        states[indexState].municipalities[indexMunicipality].zip_codes.push({
-                                            zip_code: data[0], 
-                                            colonies:[{name:data[1], type:data[2]}]
-                                        })
+                                    let indexMunicipality = states[indexState].municipalities.findIndex(obj => obj.name === data[3]);
+                                    if(indexMunicipality === -1){
+                                        states[indexState].municipalities.push({
+                                            name: data[3],
+                                            zip_codes:[{
+                                                zip_code: data[0],
+                                                colonies:[{name:data[1], type:data[2]}]
+                                            }]
+                                        });
                                     }else{
-                                        states[indexState].municipalities[indexMunicipality].zip_codes[indexZipCode].colonies.push({
-                                            name:data[1], 
-                                            type:data[2]
-                                        })
+                                        let indexZipCode = states[indexState].municipalities[indexMunicipality].zip_codes.findIndex(obj => obj.zip_code === data[0]);
+                                        if(indexZipCode === -1){
+                                            states[indexState].municipalities[indexMunicipality].zip_codes.push({
+                                                zip_code: data[0], 
+                                                colonies:[{name:data[1], type:data[2]}]
+                                            })
+                                        }else{
+                                            states[indexState].municipalities[indexMunicipality].zip_codes[indexZipCode].colonies.push({
+                                                name:data[1], 
+                                                type:data[2]
+                                            })
+                                        }
                                     }
-                                }                            
+                                }
                             }
                         }
                         

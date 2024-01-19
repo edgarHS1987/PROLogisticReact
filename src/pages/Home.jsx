@@ -10,7 +10,7 @@ import Button from "../components/Button";
 import Toast from "../components/Toast";
 
 import { zonesConfigured, zonesUnsignedDrivers } from "../services/zones";
-import { servicesAssignToDriver, servicesTotalUnsigned } from "../services/services";
+import { gMapsByAddress, servicesAssignToDriver, servicesTotalUnsigned, servicesUpdateLocation, servicesWithoutLocation } from "../services/services";
 import { decript } from "../libs/functions";
 import ModalConfigureZones from "./modals/ConfigureZones";
 import ModalAssignZonesDrivers from "./modals/AssignZonesDrivers";
@@ -29,7 +29,7 @@ const Home = ({loader})=>{
 	const [zones, setZones] = useState([]);
 	const [isTodayZone, setIsTodayZone] = useState(false);
 
-	const onLoad = ()=>{		
+	const onLoad = ()=>{
 		getDriversUnsigned();
 		getServicesUnsigned();
 	}
@@ -81,12 +81,63 @@ const Home = ({loader})=>{
             if(response.error){
                 Toast.fire('Error', response.error, 'error');
             }else{
-                Toast.fire('Correcto', response.message, 'success');
-                getServicesUnsigned();
+                Toast.fire('Correcto', response.message, 'success');				
+                getLocationServices();
             }
         }
-		await loader.current.handleClose();
+		
     }
+
+	const getLocationServices = async ()=>{
+		let clients_id = decript('clients_id');
+		let response = await servicesWithoutLocation(clients_id);
+		if(response){
+			let platform = '';
+			
+			await response.platforms.forEach((p)=>{
+				if(p.platform === 'gmaps'){
+					if(p.total <= 10000){
+						platform = 'gmaps';
+					}
+				}
+			})
+
+			let services = await Promise.all(
+				response.services.map(async (res)=>{
+					let address = res.address+', '+res.zip_code+', '+res.state;
+
+					address = address.replaceAll(' ', '%20');
+
+					if(platform === 'gmaps'){
+						let request = await gMapsByAddress(address);
+						if(request){
+							request.results.forEach((result, i)=>{
+								if(i === 0){
+									res.latitude = result.geometry.location.lat;
+									res.longitude = result.geometry.location.lng;
+									res.full_address = result.formatted_address;
+								}
+							})
+						}
+					}
+
+					return res;
+				})
+			);
+
+			let obj = {
+				services: services,
+				platform: platform
+			};
+
+			let request = await servicesUpdateLocation(obj);
+			if(request){
+				getServicesUnsigned();
+			}
+		}
+
+		await loader.current.handleClose();
+	}
 
 	useEffect(()=>{
 		onLoad();
@@ -159,7 +210,7 @@ const Home = ({loader})=>{
 							</Col>
 							<Col xs={24} className="pt-2">
 								<Col xs={24} md={12}>
-									{getPermission('services_assign_driver') && (
+									{getPermission('services_assign_drivers') && (
 										<Button 
 											title="Asignar a driver" 
 											appearance="ghost"

@@ -8,7 +8,7 @@ import Button from "../../components/Button";
 import Toast from '../../components/Toast';
 
 import { decript, swalAction } from "../../libs/functions";
-import { servicesAssignToDriver } from "../../services/services";
+import { gMapsByAddress, servicesAssignToDriver, servicesUpdateLocation, servicesWithoutLocation } from "../../services/services";
 
 const ModalUnsignedService = forwardRef(({
     loader,
@@ -37,11 +37,64 @@ const ModalUnsignedService = forwardRef(({
                 Toast.fire('Correcto', response.message, 'success');
                 setOpen(false);
                 setTotal(0);
-                getData();
+                getLocationServices();
             }
+        }else{
+            await loader.current.handleClose();
         }
-        await loader.current.handleClose();
+        
     }
+
+    const getLocationServices = async ()=>{
+		let clients_id = decript('clients_id');
+		let response = await servicesWithoutLocation(clients_id);
+		if(response){
+			let platform = '';
+			
+			await response.platforms.forEach((p)=>{
+				if(p.platform === 'gmaps'){
+					if(p.total <= 10000){
+						platform = 'gmaps';
+					}
+				}
+			})
+
+			let services = await Promise.all(
+				response.services.map(async (res)=>{
+					let address = res.address+', '+res.zip_code+', '+res.state;
+
+					address = address.replaceAll(' ', '%20');
+
+					if(platform === 'gmaps'){
+						let request = await gMapsByAddress(address);
+						if(request){
+							request.results.forEach((result, i)=>{
+								if(i === 0){
+									res.latitude = result.geometry.location.lat;
+									res.longitude = result.geometry.location.lng;
+									res.full_address = result.formatted_address;
+								}
+							})
+						}
+					}
+
+					return res;
+				})
+			);
+
+			let obj = {
+				services: services,
+				platform: platform
+			};
+
+			let request = await servicesUpdateLocation(obj);
+			if(request){
+				getData();
+			}
+		}
+
+		await loader.current.handleClose();
+	}
 
     useImperativeHandle(ref, ()=>({
         handleShow

@@ -88,7 +88,7 @@ const ServicesList = ({loader})=>{
     const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
     const [tableList, setTableList] = useState([]);
 
-    const onLoad = ()=>{
+    const onLoad = async ()=>{
         tableRef.current.setTable();
         getServiceUnsigned();
         getServices();
