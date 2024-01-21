@@ -4,7 +4,8 @@ const Button = ({
     color = 'blue',
     appearance = 'default',
     action = ()=>{},
-    classes = ''
+    classes = '',
+    disabled=false
 })=>{
     return(
         <Btn 
@@ -14,6 +15,7 @@ const Button = ({
             size="sm"
             color={color}
             onClick={action}
+            disabled={disabled}
         >
             {title}
         </Btn>

@@ -29,13 +29,25 @@ const DriversList = ({loader, reset})=>{
             label: 'RFC',
             selector: row => row.col2,
             show:true,
-            width:'30%'
+            width:'15%'
+        },
+        {
+            label: 'Días disponible',
+            selector: row => row.col3,
+            show:true,
+            width:'15%'
+        },
+        {
+            label: 'Zona',
+            selector: row => row.col4,
+            show:true,
+            width:'15%'
         },
         {
             label: 'Estatus',
-            selector: row => row.col3,
+            selector: row => row.col5,
             show:true,
-            width:'30%'
+            width:'15%'
         },
         {
             label:'',
@@ -46,7 +58,7 @@ const DriversList = ({loader, reset})=>{
                     <Fragment>
                         <ButtonToolbar>
                             
-                            {getPermission('admin_users_update') && (
+                            {getPermission('drivers_update') && (
                                 <ButtonList 
                                     controlId={'edit'}
                                     title="Editar"
@@ -55,7 +67,7 @@ const DriversList = ({loader, reset})=>{
                                 />
                             )}
 
-                            {getPermission('admin_users_delete') && (
+                            {getPermission('drivers_delete') && (
                                 <ButtonList 
                                     controlId={'delete'}
                                     title="Eliminar"
@@ -104,8 +116,9 @@ const DriversList = ({loader, reset})=>{
 					id: res.id,
 					col1: res.names+' '+res.lastname1+(res.lastname2 !== null ? ' '+res.lastname2 : ''),
 					col2: res.rfc,
-                    col3: res.status,
-					//col3: res.
+                    col3: res.availableDays,
+                    col4: res.zone,
+                    col5: res.status,
 				};
 
 				return item;
@@ -123,14 +136,6 @@ const DriversList = ({loader, reset})=>{
 
         await loader.current.handleClose();
 	}
-
-    /**
-     * abre modal de reseteo de contraseña
-     * @param {*} id identificador de registro
-     */
-    const onOpenReset = (id)=>{
-        reset.current.handleShow(id);
-    }
     
 
     /**
@@ -192,7 +197,7 @@ const DriversList = ({loader, reset})=>{
             <Divider style={{marginTop:0}} />
             <Grid fluid>
                 <Col xs={24} className="container-buttons">
-                    {getPermission('admin_users_create') && (
+                    {getPermission('drivers_create') && (
                         <Button 
                             title="Nuevo"
                             appearance="ghost"

@@ -1,4 +1,4 @@
-import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
+import { FaPencilAlt, FaTrashAlt, FaInfo } from "react-icons/fa";
 import { GoPasskeyFill } from "react-icons/go";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdManageAccounts } from "react-icons/md";
@@ -36,6 +36,8 @@ const ButtonList = ({
                         <MdManageAccounts />
                     :type === 'location' ?
                         <FaLocationDot />
+                    :type === 'details' ?
+                        <FaInfo />
                     : null
                 } 
                 onClick={()=>action()}

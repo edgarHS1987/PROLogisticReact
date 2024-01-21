@@ -11,15 +11,14 @@ import BarcodesScanner from "../../components/BarcodeScanner";
 import Toast from "../../components/Toast";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
-import Table from "../../components/Table";
 import ButtonList from "../../components/ButtonList";
 
 import sound from '../../assets/error.mp3';
 
-import { addErrorToSelectedField, getDevice, isValidForm, swalAction } from "../../libs/functions";
+import { addErrorToSelectedField, decript, getDevice, isValidForm, swalAction } from "../../libs/functions";
 import { clientsList } from "../../services/clients";
 import { warehousesShow } from "../../services/warehouses";
-import { servicesDelete, servicesList, servicesSave } from "../../services/services";
+import { gMapsByAddress, servicesAssignToDriver, servicesDelete, servicesSave, servicesUnsignedByClient, servicesUpdateLocation, servicesWithoutLocation } from "../../services/services";
 import ServicesTable from "./ServicesTable";
 import ModalServices from "../modals/Services";
 
@@ -110,41 +109,43 @@ const ServicesForm = ({loader})=>{
         if(response){
             setClients(response);
             if(response.length > 0){
-                setDataService({
-                    ...dataService,
+                let data = dataService;
+                data = {
+                    ...data,
                     clients_id: response[0].value
-                });
+                }
+                await setDataService(data);
 
                 await getWarehouse(response[0].value);
 
-                await getData(response[0].value);
+                await getData(data);
             }
             
-        }
-
-        
+        }        
     }
 
-    const getData = async (id = dataService.clients_id)=>{
-        let response = await servicesList({clients_id: id});
+    const getData = async (data)=>{        
+        let response = await servicesUnsignedByClient({clients_id: data.clients_id});
         if(response){
-            let data = dataService.services;
+            let services = data.services;
 
             response.forEach((res)=>{
-                data.push(res);
+                services.push(res);
             });            
+
+            data = {
+                ...data,
+                services: services
+            }
+        
+            await setDataService(data);
 
             await setDataOnTable(data);
         }
     }
 
     const setDataOnTable = async (data)=>{
-        setDataService({
-            ...dataService,
-            services: data
-        });
-
-        let items = data.map((res)=>{
+        let items = data.services.map((res)=>{
             let item = {
                 id: res.id,
                 col1: res.client+' - '+res.warehouse,
@@ -252,11 +253,16 @@ const ServicesForm = ({loader})=>{
                     timer:6000
                 });
             }else{
-                let data = dataService.services;
+                let service = dataService;
+                service = {
+                    ...service,
+                    code: ''
+                };
+                service.services.push(response);
 
-                data.push(response);
+                await setDataService(service);
 
-                setDataOnTable(data);
+                await setDataOnTable(service);
                 
                 Toast.fire({title:'Correcto',text:'El servicio que agrego correctamente', icon:'success'});
             }
@@ -348,9 +354,81 @@ const ServicesForm = ({loader})=>{
     }
 
     const openModalService = async ()=>{
-        await getData();
         await modalService.current.handleShow();
     }
+
+    const onAssignService = async ()=>{
+        let obj = {
+            clients_id: decript('clients_id')
+        };
+
+        await loader.current.handleShow('Asignando...');
+        let response = await servicesAssignToDriver(obj);
+        if(response){
+            if(response.error){
+                Toast.fire('Error', response.error, 'error');
+            }else{
+                modalService.current.handleClose();
+                
+                getLocationServices();
+            }
+        }else{
+            await loader.current.handleClose();
+        }
+        
+    }
+
+    const getLocationServices = async ()=>{
+		let clients_id = decript('clients_id');
+		let response = await servicesWithoutLocation(clients_id);
+		if(response){
+			let platform = '';
+			
+			await response.platforms.forEach((p)=>{
+				if(p.platform === 'gmaps'){
+					if(p.total <= 10000){
+						platform = 'gmaps';
+					}
+				}
+			})
+
+			let services = await Promise.all(
+				response.services.map(async (res)=>{
+					let address = res.address+', '+res.zip_code+', '+res.state;
+
+					address = address.replaceAll(' ', '%20');
+
+					if(platform === 'gmaps'){
+						let request = await gMapsByAddress(address);
+						if(request){
+							request.results.forEach((result, i)=>{
+								if(i === 0){
+									res.latitude = result.geometry.location.lat;
+									res.longitude = result.geometry.location.lng;
+									res.full_address = result.formatted_address;
+								}
+							})
+						}
+					}
+
+					return res;
+				})
+			);
+
+			let obj = {
+				services: services,
+				platform: platform
+			};
+
+			let request = await servicesUpdateLocation(obj);
+			if(request){
+				Toast.fire('Correcto', response.message, 'success');
+                navigate('/services/list');
+			}
+		}
+
+		await loader.current.handleClose();
+	}
     
     useEffect(()=>{
         onLoad();                
@@ -446,9 +524,15 @@ const ServicesForm = ({loader})=>{
                                                                                 
                                         <Col xs={24} className="mt-3 text-center">
                                             <Button 
+                                                title="Cancelar"
+                                                classes={isMobile ? "full-width" : ""}
+                                                action={()=>navigate('/services/list')}
+                                            />
+                                            <Button 
                                                 title="Asignar"
                                                 appearance="primary"
                                                 classes={isMobile ? "full-width" : ""}
+                                                action={()=>onAssignService()}
                                             />
                                         </Col>
                                     </Row>
@@ -463,6 +547,7 @@ const ServicesForm = ({loader})=>{
                 loader={loader}
                 tableConfig={tableConfig}
                 tableList={tableList}
+                onAssignService={onAssignService}
                 ref={modalService}
             />
         </Grid>

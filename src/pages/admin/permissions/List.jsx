@@ -69,7 +69,7 @@ const PermissionsList = ({loader})=>{
 		let response = await permissions();
 		if(response){
 
-			let data = response.data.map((res)=>{ //recorre el arreglo de permisos
+			let data = response.map((res)=>{ //recorre el arreglo de permisos
 				//configuracion de cada fila conformer la confifuracion de columnas 
 				let item = {
 					id: res.id,

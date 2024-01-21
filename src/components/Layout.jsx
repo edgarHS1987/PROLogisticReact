@@ -37,19 +37,20 @@ const Layout = ({loader, reset})=>{
 		 *
 		 * */
 		{title:'Dashboard', submenu:[], show:true, open:false, active:true, url:'/', icon:<DashboardIcon />},        
-        {title:'Clientes', submenu:[], show:true, open:false, active:true, url:'/clients/list', icon:<FaUser />},
-        {title:'Servicios', show:true, active:false, open:false, icon:<FaMapLocationDot className='icon-menu' />, submenu:[
-            {title:'Estados', show:true, active:false, url:'/services/states/list'},
-			{title:'Zonas', show:true, active:false, url:'/services/zones/list'},
-            {title:'Servicios', show:true, active:false, url:'/services/list'}
-		]},
-		{title:'Admin', show:getPermission('admin_menu'), active:false, open:false, icon:<GearCircleIcon />, submenu:[
+        {title:'Clientes', submenu:[], show:getPermission('clients'), open:false, active:true, url:'/clients/list', icon:<FaUser />},
+        {title:'Servicios', show:getPermission('admin_menu'), active:false, open:false, icon:<FaMapLocationDot className='icon-menu' />, submenu:[
+            {title:'Estados', show:getPermission('services_states'), active:false, url:'/services/states/list'},
+			{title:'Zonas', show:getPermission('services_zones'), active:false, url:'/services/zones/list'},
+            {title:'Servicios', show:getPermission('services'), active:false, url:'/services/list'}
+		]},		
+
+        {title:'Admin', show:getPermission('admin_menu'), active:false, open:false, icon:<GearCircleIcon />, submenu:[
 			{title:'Permisos', show:getPermission('admin_permissions'), active:false, url:'/admin/permissions/list'},
             {title:'Roles', show:getPermission('admin_roles'), active:false, url:'/admin/roles/list'},
             {title:'Usuarios', show:getPermission('admin_users'), active:false, url:'/admin/users/list'}
 		]},
         {title:'Drivers', show:getPermission('admin_menu'), active:false, open:false, icon:<MemberIcon />, submenu:[
-			{title:'Ver', show:getPermission('admin_permissions'), active:false, url:'/drivers/'},
+			{title:'Ver', show:getPermission('admin_permissions'), active:false, url:'/drivers/list'},
 		]},
         {title:'Reportes', show:getPermission('admin_menu'), active:false, open:false, icon:<DetailIcon />, submenu:[
 			{title:'Dias Activos Drivers', show:getPermission('admin_permissions'), active:false, url:'/reports/drivers/workingDays'},

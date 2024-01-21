@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Col, Divider, Grid, Panel, PanelGroup, Row } from "rsuite"
 
 import Title from "../../../components/Title"
@@ -9,8 +9,10 @@ import MunicipalitiesModal from "../../modals/Municipalities";
 import { statesDetails } from "../../../services/states";
 import { municipalitiesShow } from "../../../services/municipalities";
 import ButtonList from "../../../components/ButtonList";
+import SystemContext from "../../../context/SystemContext";
 
 const StatesList = ({loader})=>{   
+    const {getPermission} = useContext(SystemContext);
     const statesRef = useRef();
     const municialityRef = useRef();
     const tableRef = useRef([]);
@@ -131,24 +133,27 @@ const StatesList = ({loader})=>{
             <Grid fluid>
                 <Row>
                     
-                        <Col xs={24} className="flex justify-content-end mb-3">
-                            {statesList.length === 0 && (
+                    <Col xs={24} className="flex justify-content-end mb-3">
+                        {statesList.length === 0 && (
+                            getPermission('services_states_load') && (
                                 <Button 
                                     title="Agregar"
                                     appearance="ghost"
                                     classes="btn-new"
                                     action={()=>openModalStates()}
                                 />
-                            )}
-
-                                <Button 
-                                    title="Cargar ubicación"
-                                    appearance="ghost"
-                                    classes="btn-new"
-                                    action={()=>openModalMunicipalities()}
-                                />
-
-                        </Col>
+                            )
+                            
+                        )}
+                        {getPermission('services_states_location') && (
+                            <Button 
+                                title="Cargar ubicación"
+                                appearance="ghost"
+                                classes="btn-new"
+                                action={()=>openModalMunicipalities()}
+                            />
+                        )}
+                    </Col>
                     
                     
                     <Col xs={24}>

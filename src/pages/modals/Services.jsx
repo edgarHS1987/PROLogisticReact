@@ -7,7 +7,8 @@ const ModalServices = forwardRef(({
     loader,
     tableConfig,
     tableList,
-    tableRef
+    tableRef,
+    onAssignService
 }, ref)=>{
     const [open, setOpen] = useState(false);
     const handleShow = async ()=>{        
@@ -18,9 +19,9 @@ const ModalServices = forwardRef(({
         setOpen(false);
     }
 
-    
     useImperativeHandle(ref, ()=>({
-        handleShow
+        handleShow,
+        handleClose
     }));
 
     return(
@@ -63,7 +64,7 @@ const ModalServices = forwardRef(({
                         <Button className="full-width" appearance="ghost" onClick={()=>handleClose()}>Cerrar</Button>
                     </Col>
                     <Col xs={12}>
-                        <Button className="full-width" appearance="primary" onClick={()=>handleClose()}>Asignar</Button>
+                        <Button className="full-width" appearance="primary" onClick={()=>onAssignService()}>Asignar</Button>
                     </Col>
                 </div>
             </Modal.Footer>

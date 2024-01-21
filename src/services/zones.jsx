@@ -1,8 +1,25 @@
 import { fetchRequest } from "../libs/functions"
 
 
+/**
+ * Asigna drivers a una zona
+ * @param {*} obj 
+ * @returns 
+ */
+export const zonesAssignDriver = (obj)=>{
+    return fetchRequest({url:'/zones/assign/driver', method:'POST', body:obj});
+}
+
 export const zonesByClient = (id)=>{
     return fetchRequest({url:'/zones/byClient/'+id});
+}
+
+/**
+ * Obtiene zonas configuradas
+ * @param {integer} id identificador de cliente
+ */
+export const zonesConfigured = (id)=>{
+    return fetchRequest({url:'/zones/configured/'+id});
 }
 
 /**
@@ -13,9 +30,23 @@ export const zonesConfiguring = (obj)=>{
 }
 
 /**
+ * Obtiene las zonas y los drivers para asignar
+ */
+export const zonesDrivers = (clients_id)=>{
+    return fetchRequest({url:'/zones/drivers/'+clients_id});
+}
+
+/**
  * Verifica si ya existe la configuracion de zonas
  * @param {*} clients_id 
  */
 export const zonesVerify = (clients_id)=>{
     return fetchRequest({url:'/zones/verify', method:'POST', body:{clients_id: clients_id}});
+}
+
+/**
+ * Obtiene el numero de driver que no estan asignados a una zona
+ */
+export const zonesUnsignedDrivers = ()=>{
+    return fetchRequest({url:'/zones/unsignedDrivers'});
 }

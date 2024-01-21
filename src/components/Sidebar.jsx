@@ -16,9 +16,10 @@ const Sidebar = ({
 		<Grid fluid className="p-0 m-0 full-height">
 			<Grid fluid className="pt-2 text-center">
 				<Col xs={12} md={6} lg={expanded ? 12 : 24} lgOffset={expanded ? 6 : 0} className="p-0 pb-2">
+					<img src="/logo.webp" className="img-fluid" />
 				</Col>
 				<Col xs={24} xlHidden={!expanded} xxlHidden={!expanded} lgHidden={!expanded} lg={24}>
-					<h4 className="sidebar title">Logistic App</h4>
+					<h4 className="sidebar title">Silogistico</h4>
 				</Col>
 			</Grid>
 
