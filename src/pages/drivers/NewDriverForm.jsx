@@ -211,6 +211,19 @@ export const NewDriverForm = ({handleId,idDriver}) => {
               />
             </Form.Group>
 
+            <Form.Group controlId="emailControl">
+              <Form.ControlLabel>Email</Form.ControlLabel>
+              <Form.Control 
+                name="email" 
+                // style={{ width: 150 }} 
+                value = {email}
+                onChange={handleChange}
+                size="sm"
+                required
+              />
+              <Form.HelpText tooltip>Obligatorio</Form.HelpText>
+            </Form.Group>
+
             <Form.Group controlId="MainPhone">
               <Form.ControlLabel>Telefono</Form.ControlLabel>
               <Form.Control 
@@ -235,27 +248,15 @@ export const NewDriverForm = ({handleId,idDriver}) => {
               />
             </Form.Group>
 
+            
+
           </Form>
         </Col>
 
       </Row>
 
-      <Form layout="inline" className={"personales"}>
-
-      
-
-      <Form.Group controlId="emailControl">
-        <Form.ControlLabel>Email</Form.ControlLabel>
-        <Form.Control 
-          name="email" 
-          style={{ width: 150 }} 
-          value = {email}
-          onChange={handleChange}
-          size="sm"
-          required
-        />
-      </Form.Group>
-      </Form>
+      {/* <Form layout="inline" className={"personales"}>
+      </Form> */}
       <br />
 
       <Button color="blue" appearance="primary" type="submit" onClick={handleSubmit}> {textButton} </Button>

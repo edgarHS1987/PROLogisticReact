@@ -1,17 +1,20 @@
-import React, { useState,useEffect,useRef,useContext } from 'react'
-import { Form, Button,Grid, Col, Divider,DatePicker,IconButton,ButtonGroup } from 'rsuite';
+import React, { useState,useEffect,useRef,useContext,Fragment } from 'react'
+import { Form, Button,Grid, Col, Divider,DatePicker,ButtonGroup,
+  ButtonToolbar } from 'rsuite';
 
 import { useNavigate } from "react-router-dom";
 import Title from '../../components/Title';
 import Table from '../../components/Table';
 import {useForm} from '../../hooks/useForm';
 import Toast from '../../components/Toast';
+import ButtonList from "../../components/ButtonList";
 
 import SystemContext from "../../context/SystemContext";
 
 import {  asignedServices } from "../../services/reports";
 import { downloadExcel } from "react-export-table-to-excel";
 import ExportIcon from '@rsuite/icons/Export';
+import DetailDelivery from '../modals/DetailDelivery';
 
 export const AssignedServices = ( {loader, reset} ) => {
 
@@ -19,6 +22,7 @@ export const AssignedServices = ( {loader, reset} ) => {
   const {getPermission} = useContext(SystemContext);
   const [fechaInicio,setFechaInicio] =useState( new Date() );
   const [fechaFinal,setFechaFinal] =useState( new Date() );
+  const detailRef = useRef(null);
 
 	const [tableConfig, setTableConfig] = useState({columns:[
         {
@@ -31,7 +35,7 @@ export const AssignedServices = ( {loader, reset} ) => {
             label: 'Fecha Alta Servicio',
             selector: row => row.col2,
             show:true,
-            width:'10%'
+            width:'15%'
         },
         {
             label: 'Guia',
@@ -55,7 +59,7 @@ export const AssignedServices = ( {loader, reset} ) => {
           label: 'Fecha Asignacion',
           selector: row => row.col6,
           show:true,
-          width:'10%'
+          width:'15%'
         },
         {
           label: 'Estatus',
@@ -63,9 +67,37 @@ export const AssignedServices = ( {loader, reset} ) => {
           show:true,
           width:'10%'
         },
+        {
+          label:'',
+          show:true,
+          width:'10px',            
+          selector: row => {
+              return(
+                  <Fragment>
+                      <ButtonToolbar>
+                          
+                          {getPermission('admin_users_update') && (
+                              <ButtonList 
+                                  controlId={'edit'}
+                                  title="Detalle Entrega"
+                                  type="location"
+                                  action={()=>onOpenDetail(row.id)}
+                              />
+                          )}
+
+                      </ButtonToolbar>
+                  </Fragment>
+              )
+          } 
+      }
         
     ]})
 	const [tableList, setTableList] = useState([]);
+
+
+  const onOpenDetail = ( id )=>{
+    detailRef.current.handleOpen( id );
+  }
 
 	/**
      * Agregar configuracion de tabla
@@ -174,6 +206,10 @@ export const AssignedServices = ( {loader, reset} ) => {
 
   return (
     <>
+      <DetailDelivery ref={ detailRef }
+        loader={loader}
+      />
+
       <Grid fluid className='content'>
             <Grid fluid>
                 <Col xs={24} className="mb-2">
